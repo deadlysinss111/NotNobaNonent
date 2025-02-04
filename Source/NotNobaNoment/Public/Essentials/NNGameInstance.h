@@ -19,16 +19,16 @@
  *   - Inventory & Stats
  */
 
-DECLARE_LOG_CATEGORY_EXTERN(GameInstance, Log, All);
+DECLARE_LOG_CATEGORY_EXTERN(NN_GameInstance, Log, All);
 
 UCLASS()
 class NOTNOBANOMENT_API UNNGameInstance : public UGameInstance
 {
 	GENERATED_BODY()
 	
-	/*  -----------  */
-	/* CLASS METHODS */
-	/*  -----------  */
+	/*  -----------    */
+   /*  CLASS METHODS  */
+  /*    -----------  */
 public:
 	// Constru & Destru
 	UNNGameInstance(const FObjectInitializer& ARG_ObjectInitializer);

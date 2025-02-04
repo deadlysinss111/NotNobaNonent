@@ -4,18 +4,18 @@
 #include "Essentials/NNGameInstance.h"
 
 
-DEFINE_LOG_CATEGORY(GameInstance);
+DEFINE_LOG_CATEGORY(NN_GameInstance);
 
-  /*  -----------    */
- /*  CLASS METHODS  */
-/*    -----------  */
+	/*  -----------    */
+   /*  CLASS METHODS  */
+  /*    -----------  */
 
 // Constru & Destru
 UNNGameInstance::UNNGameInstance(const FObjectInitializer& ARG_ObjectInitializer)
 	: Super(ARG_ObjectInitializer)
 {
 	// Nothing yet
-	UE_LOG(GameInstance, Log, TEXT("Constructed UNNGameInstance ! :D"));
+	UE_LOG(NN_GameInstance, Log, TEXT("Constructed UNNGameInstance ! :D"));
 }
 UNNGameInstance::~UNNGameInstance()
 {
