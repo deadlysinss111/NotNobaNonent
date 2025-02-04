@@ -28,6 +28,7 @@ public:
 
 	UNNTriggerComponent* TriggerComponent;
 	UNNHealthComponent* HealthComponent;
+
 	// Other components
 
 
