@@ -32,22 +32,41 @@ public:
 	// Other components
 
 
-	// Call this function to link the events to the functions on the BeginPlay of the owner
-	UFUNCTION()
-	virtual void Start();
-
-
 	// Events
-	UFUNCTION()
 	virtual void OnActorEnter(AActor* OtherActor) = 0;
-	UFUNCTION()
 	virtual void OnActorExit(AActor* OtherActor) = 0;
-
-	UFUNCTION()
+   
 	virtual void OnHealthChanged(float CurrentHealth) = 0;
-	UFUNCTION()
-	virtual void OnDeath();
+	virtual void OnDeath() = 0;
 
-	// Other events
+	template<typename T>
+		void InitSmth(T* Owner) {
+			//Get the trigger component of the owner
+			TriggerComponent = Owner->FindComponentByClass<UNNTriggerComponent>();
+
+			if (TriggerComponent)
+			{
+				TriggerComponent->OnActorEnter.AddDynamic(Owner, &T::OnActorEnter);
+				TriggerComponent->OnActorExit.AddDynamic(Owner, &T::OnActorExit);
+			}
+			else
+			{
+				UE_LOG(LogTemp, Error, TEXT("The trigger are not valid"));
+			}
+
+			//Get the health component of the owner
+			HealthComponent = Owner->FindComponentByClass<UNNHealthComponent>();
+
+			if (HealthComponent)
+			{
+				HealthComponent->OnHealthChanged.AddDynamic(Owner, &T::OnHealthChanged);
+				HealthComponent->OnDeath.AddDynamic(Owner, &T::OnDeath);
+			}
+			else
+			{
+				UE_LOG(LogTemp, Error, TEXT("The health are not valid"));
+			}
+			
+	}
 
 };
