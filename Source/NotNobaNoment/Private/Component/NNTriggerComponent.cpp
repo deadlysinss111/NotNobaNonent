@@ -8,6 +8,7 @@
 // Sets default values for this component's properties
 UNNTriggerComponent::UNNTriggerComponent()
 {
+	// Créer un composant de collision par défaut
 	CollisionComponent = CreateDefaultSubobject<UBoxComponent>(TEXT("CollisionComponent"));
 
 	// Configurer des valeurs par défaut pour les collisions
@@ -20,15 +21,31 @@ UNNTriggerComponent::UNNTriggerComponent()
 	CollisionComponent->OnComponentEndOverlap.AddDynamic(this, &UNNTriggerComponent::HandleEndOverlap);
 }
 
+#include "GameFramework/Character.h"
+#include <Components/SphereComponent.h>
+
 // Called when the game starts
 void UNNTriggerComponent::BeginPlay()
 {
 	Super::BeginPlay();
 
-	CollisionComponent->AttachToComponent(
-		GetOwner()->GetRootComponent(),
-		FAttachmentTransformRules::KeepRelativeTransform
-	);
+	// Vérifie si le owner posséde dans ça hierarchie un box component ou un capsule component ou un sphere component
+	if (GetOwner()->FindComponentByClass<UBoxComponent>())
+	{
+		setCollisionComponent(GetOwner()->FindComponentByClass<UBoxComponent>());
+	}
+	else if (GetOwner()->FindComponentByClass<UCapsuleComponent>())
+	{
+		setCollisionComponent(GetOwner()->FindComponentByClass<UCapsuleComponent>());
+	}
+	else if (GetOwner()->FindComponentByClass<USphereComponent>())
+	{
+		setCollisionComponent(GetOwner()->FindComponentByClass<USphereComponent>());
+	}
+	else
+	{
+		UE_LOG(LogTemp, Error, TEXT("The owner does not have a valid collision component"));
+	}
 }
 
 void UNNTriggerComponent::setCollisionComponent(UPrimitiveComponent* NewCollisionComponent)

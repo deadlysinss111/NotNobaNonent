@@ -8,6 +8,7 @@
 #include "Interface/NNEntityInterface.h"
 #include "Component/NNHealthComponent.h"
 #include "Component/NNTriggerComponent.h"
+#include "Abilities/NNAbility.h"
 
 #include "NNEntityCharacter.generated.h"
 
@@ -18,25 +19,26 @@ class NOTNOBANOMENT_API ANNEntityCharacter : public ACharacter, public INNEntity
 
 public:
 	// Sets default values for this character's properties
-	ANNEntityCharacter();
+	ANNEntityCharacter(); 
 
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+
 
 	// Components
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
 	UNNTriggerComponent* TriggerComponent;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
 	UNNHealthComponent* HealthComponent;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
+	UNNAbility* AbilityComponent;
 
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-	// Called to bind functionality to input
-	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
-
+	// INNEntityInterface
 	UFUNCTION()
 	virtual void OnActorEnter(AActor* OtherActor) override;
 	UFUNCTION()
@@ -48,6 +50,11 @@ public:
 	virtual void OnDeath() override;
 
 
-
-
+	// Functions 
+protected:
+	// Movement
+	UFUNCTION()
+	void Move();
+	UFUNCTION()
+	void Look();
 };
