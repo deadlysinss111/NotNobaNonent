@@ -11,7 +11,7 @@
 
 /**
  *  Custom HUD
- * 
+ *
  *  This is meant to be the player's HUD and does not include :
  *   - Menus
  *   - Pause screens
@@ -26,17 +26,15 @@ class NOTNOBANOMENT_API ANNHUD : public AHUD
 	GENERATED_BODY()
 
 	/*  ----------    */
-   /*  CLASS FIELDS  */
-  /*    ----------  */
+	/*  CLASS FIELDS  */
+	/*    ----------  */
 private:
-	UPROPERTY(EditDefaultsOnly, Category = "Code | UserWidget")
-	TSubclassOf<UUserWidget> UserWidget;
-
-
+	// UPROPERTY(EditDefaultsOnly, Category = "Code | UserWidget")
+	// TSubclassOf<UUserWidget> UserWidget;
 
 	/*  -----------    */
-   /*  CLASS METHODS  */
-  /*    -----------  */
+	/*  CLASS METHODS  */
+	/*    -----------  */
 public:
 	// Constru & Destru
 	ANNHUD();
