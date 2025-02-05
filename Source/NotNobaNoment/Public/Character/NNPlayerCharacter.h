@@ -4,6 +4,8 @@
 
 #include "CoreMinimal.h"
 #include "Character/NNEntityCharacter.h"
+#include "Abilities/NNAbilitySetDataAsset.h"
+#include "Abilities/NNAbility.h"
 #include "NNPlayerCharacter.generated.h"
 
 /**
@@ -26,7 +28,20 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 	// Called to bind functionality to input
-	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;	
+	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+
+public:
+	UPROPERTY(EditAnywhere)
+	UNNAbilitySetDataAsset* _abilitySet;
+
+	UPROPERTY()
+	UNNAbility* _attack;
+
+	UPROPERTY()
+	UNNAbility* _ability_1;
+
+	UPROPERTY()
+	UNNAbility* _ability_2;
 
 	//Input System
 protected:
@@ -42,5 +57,18 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Entity")
 	class UInputAction* LookAction;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Entity")
+	class UInputAction* AttackAction;
+
 	class UCameraComponent* Camera;
+
+private:
+	UFUNCTION()
+	void TriggerAttack();
+
+	UFUNCTION()
+	void TriggerAbility_1();
+
+	UFUNCTION()
+	void TriggerAbility_2();
 };

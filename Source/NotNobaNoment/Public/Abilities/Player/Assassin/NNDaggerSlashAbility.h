@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Abilities/NNAbility.h"
+#include "NiagaraComponent.h"
 #include "NNDagger.h"
 #include "NNDaggerSlashAbility.generated.h"
 
@@ -19,7 +20,14 @@ public:
 	UPROPERTY(EditAnywhere)
 	ANNDagger* _dagger;
 
+private:
+	UPROPERTY(EditAnywhere)
+	UNiagaraSystem* _slashFX;
+
 public:
+	UFUNCTION()
 	void Init(APawn* owner) override;
+
+	UFUNCTION()
 	void Trigger() override;
 };

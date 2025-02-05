@@ -14,6 +14,15 @@ ANNPlayerCharacter::ANNPlayerCharacter()
 
 void ANNPlayerCharacter::BeginPlay()
 {
+    
+    if (_abilitySet != NULL) {
+        _attack = NewObject<UNNAbility>(this, _abilitySet->_attack);
+        _attack->Init(this);
+    }
+    else
+        GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, TEXT("the ability set is null"));
+
+    
 }
 
 void ANNPlayerCharacter::Tick(float DeltaTime)
@@ -30,6 +39,8 @@ void ANNPlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputC
         Input->BindAction(MoveAction, ETriggerEvent::Triggered, this, &ANNPlayerCharacter::Move);
         Input->BindAction(LookAction, ETriggerEvent::Triggered, this, &ANNPlayerCharacter::Look);
 
+        Input->BindAction(AttackAction, ETriggerEvent::Triggered, this, &ANNPlayerCharacter::TriggerAttack);
+
         //OTHER ACTION
 		UE_LOG(LogTemp, Warning, TEXT("PlayerInputComponent is UEnhancedInputComponent"));
     }
@@ -37,4 +48,16 @@ void ANNPlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputC
 	{
 		UE_LOG(LogTemp, Error, TEXT("PlayerInputComponent is not UEnhancedInputComponent"));
 	}
+}
+
+void ANNPlayerCharacter::TriggerAttack() {
+    _attack->Trigger();
+}
+
+void ANNPlayerCharacter::TriggerAbility_1() {
+    _ability_1->Trigger();
+}
+
+void ANNPlayerCharacter::TriggerAbility_2() {
+    _ability_2->Trigger();
 }

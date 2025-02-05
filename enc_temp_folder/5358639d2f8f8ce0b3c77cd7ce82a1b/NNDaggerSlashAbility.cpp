@@ -14,11 +14,13 @@ void UNNDaggerSlashAbility::Init(APawn* owner) {
 
 	//for(UStaticMeshComponent** comp : StaticComps)
 
-	FString AssetPath = FString::Printf(TEXT("NiagaraSystem'/Game/Entities/Heroes/Assassin/Abilities/DaggerSlash/DaggerSlashFX.DaggerSlashFX'"));
-	_slashFX = Cast<UNiagaraSystem>(StaticLoadObject(UNiagaraSystem::StaticClass(), this, *AssetPath));
+	FString EmitterName = TEXT("DaggerSlashFX");
+	FString AssetPath = FString::Printf(TEXT("NiagaraSystem'/Game/Effects/%s.%s'"), *EmitterName, *EmitterName);
+	_slashFX = Cast<UNiagaraSystem>(StaticLoadObject(UNiagaraSystem::StaticClass(), nullptr, *AssetPath));
 
 	if (!_slashFX)
 	{
+		UE_LOG(LogTemp, Warning, TEXT("Failed to load Niagara System: %s"), *EmitterName);
 		GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Blue, TEXT("fail to load fx"));
 		return;
 	}
@@ -28,13 +30,13 @@ void UNNDaggerSlashAbility::Init(APawn* owner) {
 
 void UNNDaggerSlashAbility::Trigger() {
 	//_owner->GetComponentByClass< UNiagaraSystem>();
-	//_dagger->Slash();
+	_dagger->Slash();
 
 	auto var = UNiagaraFunctionLibrary::SpawnSystemAtLocation(
 		_owner,
 		_slashFX,
-		_owner->GetActorLocation(),
-		_owner->GetActorRotation(),
+		FVector(0, 0, 0),
+		FRotator(0, 0, 0),
 		FVector(1.0f), // Scale
 		true,          // Auto Destroy
 		true,          // Auto Activate
