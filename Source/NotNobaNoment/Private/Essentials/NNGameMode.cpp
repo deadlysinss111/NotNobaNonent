@@ -17,16 +17,16 @@ ANNGameMode::ANNGameMode()
 	// TODO: Use the correct custom classes when they exist.
 	DefaultPawnClass = APawn::StaticClass();
 	DefaultPlayerName = FText::FromString("Player");
-
 	PlayerControllerClass = APlayerController::StaticClass();
 
-	//GameState = AGameModeBase();		<-- Doesn't work, might need to be set in the Editor directly in the future.
-	GameStateClass = AGameModeBase::StaticClass();
 
-	HUDClass = AHUD::StaticClass();
+	// Default fields initializiation
+	HUDClass = ANNHUD::StaticClass();
+	GameStateClass = ANNGameStatePlaying::StaticClass();
 
-	// Final field initializiations
-	// None for now
+	// Set to None since those will probably remain unused
+	PlayerStateClass = nullptr;
+	SpectatorClass = nullptr;
 }
 ANNGameMode::~ANNGameMode()
 {

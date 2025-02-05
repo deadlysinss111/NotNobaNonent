@@ -8,6 +8,8 @@
 // Extra includes
 #include "GameFramework/Actor.h"		// Makes Actor handling possible, which is useful immidiately (constructor).
 #include "GameFramework/HUD.h"			// Makes HUD handling possible, which is useful immidiately (constructor). Not included above, for some reason.
+#include "NNGameStatePlaying.h"
+#include "NNHUD.h"
 
 #include "NNGameMode.generated.h"
 
