@@ -31,5 +31,10 @@ void ANNPlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputC
         Input->BindAction(LookAction, ETriggerEvent::Triggered, this, &ANNPlayerCharacter::Look);
 
         //OTHER ACTION
+		UE_LOG(LogTemp, Warning, TEXT("PlayerInputComponent is UEnhancedInputComponent"));
     }
+    else
+	{
+		UE_LOG(LogTemp, Error, TEXT("PlayerInputComponent is not UEnhancedInputComponent"));
+	}
 }

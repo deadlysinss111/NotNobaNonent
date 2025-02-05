@@ -58,9 +58,9 @@ void ANNEntityCharacter::OnDeath()
 // Movement
 void ANNEntityCharacter::Move()
 {
-	//Movement for a top-down camera
-	//Add movement in that direction
-    
+    //LOG
+	UE_LOG(LogTemp, Warning, TEXT("Move"));
+   
 	FVector Direction = FRotationMatrix(Controller->GetControlRotation()).GetScaledAxis(EAxis::X);
 	AddMovementInput(Direction, 1.0f);
 
