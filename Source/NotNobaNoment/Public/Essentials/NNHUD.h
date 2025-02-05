@@ -6,6 +6,7 @@
 #include "GameFramework/HUD.h"
 
 // Extra includes
+#include "Blueprint/UserWidget.h"
 
 #include "NNHUD.generated.h"
 
