@@ -34,11 +34,11 @@ public:
 
 
 	// Events
-	virtual void OnActorEnter(AActor* OtherActor) = 0;
-	virtual void OnActorExit(AActor* OtherActor) = 0;
+	virtual void OnActorEnter(AActor* OtherActor) {};
+	virtual void OnActorExit(AActor* OtherActor) {};
    
-	virtual void OnHealthChanged(float CurrentHealth) = 0;
-	virtual void OnDeath() = 0;
+	virtual void OnHealthChanged(float CurrentHealth) {};
+	virtual void OnDeath() {};
 
 	template<typename T>
 		void InitSmth(T* Owner) {

@@ -60,6 +60,7 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Entity")
 	class UInputAction* AttackAction;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Entity")
 	class UCameraComponent* Camera;
 
 private:
