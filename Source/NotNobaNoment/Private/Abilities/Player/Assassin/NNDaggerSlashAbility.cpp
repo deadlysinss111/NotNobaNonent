@@ -3,6 +3,7 @@
 
 #include "Abilities/Player/Assassin/NNDaggerSlashAbility.h"
 #include "NiagaraFunctionLibrary.h"
+//#include "AnimInstance.h"
 #include "Engine/StreamableManager.h"
 #include "Engine/AssetManager.h"
 
@@ -29,6 +30,8 @@ void UNNDaggerSlashAbility::Init(APawn* owner) {
 void UNNDaggerSlashAbility::Trigger() {
 	//_owner->GetComponentByClass< UNiagaraSystem>();
 	//_dagger->Slash();
+
+	_owner->GetComponentByClass<USkeletalMeshComponent>()->GetAnimInstance()->RequestTransitionEvent(TEXT("Attack"), .1f, (ETransitionRequestQueueMode)0, (ETransitionRequestOverwriteMode)0);
 
 	auto var = UNiagaraFunctionLibrary::SpawnSystemAtLocation(
 		_owner,
