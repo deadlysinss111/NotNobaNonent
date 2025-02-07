@@ -37,11 +37,9 @@ protected:
 	class UInputAction* MoveAction;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Entity")
-	class UInputAction* JumpAction;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Entity")
 	class UInputAction* LookAction;
 
+	//Camera
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Entity")
 	class UCameraComponent* Camera;
 

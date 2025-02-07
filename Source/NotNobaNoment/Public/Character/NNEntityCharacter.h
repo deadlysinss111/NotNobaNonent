@@ -39,23 +39,15 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
+protected:
 	// INNEntityInterface
 	UFUNCTION()
-	virtual void OnActorEnter(AActor* OtherActor) override;
+	virtual void OnActorEnter(AActor* OtherActor) override {};
 	UFUNCTION()
-	virtual void OnActorExit(AActor* OtherActor) override;
+	virtual void OnActorExit(AActor* OtherActor) override {};
 
 	UFUNCTION()
-	virtual void OnHealthChanged(float CurrentHealth) override;
+	virtual void OnHealthChanged(float CurrentHealth) override {};
 	UFUNCTION()
-	virtual void OnDeath() override;
-
-
-	// Functions 
-protected:
-	// Movement
-	UFUNCTION()
-	void Move(FVector Direction);
-	UFUNCTION()
-	void Look(FVector Direction);
+	virtual void OnDeath() override {};
 };

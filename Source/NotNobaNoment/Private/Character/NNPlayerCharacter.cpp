@@ -31,13 +31,6 @@ void ANNPlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputC
     {
         Input->BindAction(MoveAction, ETriggerEvent::Triggered, this, &ANNPlayerCharacter::HandlePlayerInputMove);
         Input->BindAction(LookAction, ETriggerEvent::Triggered, this, &ANNPlayerCharacter::HandlePlayerLook);
-
-        //OTHER ACTION
-        UE_LOG(LogTemp, Warning, TEXT("PlayerInputComponent is UEnhancedInputComponent"));
-    }
-    else
-    {
-        UE_LOG(LogTemp, Error, TEXT("PlayerInputComponent is not UEnhancedInputComponent"));
     }
 }
 
@@ -58,5 +51,6 @@ void ANNPlayerCharacter::HandlePlayerInputMove(const FInputActionValue& InputVal
 void ANNPlayerCharacter::HandlePlayerLook(const FInputActionValue& InputValue)
 {
     FVector2D Movement = InputValue.Get<FVector2D>();
-    Look(FVector(Movement.X, Movement.Y, 0));
+    AddControllerYawInput(Movement.X);
+    AddControllerPitchInput(Movement.Y);
 }
