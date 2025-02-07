@@ -1,8 +1,8 @@
+#include "GameFramework/CharacterMovementComponent.h"
+
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "Character/NNEntityCharacter.h"
-
-
 
 // Sets default values
 ANNEntityCharacter::ANNEntityCharacter()
@@ -12,9 +12,9 @@ ANNEntityCharacter::ANNEntityCharacter()
 
     TriggerComponent = CreateDefaultSubobject<UNNTriggerComponent>(TEXT("TriggerComponent"));
     HealthComponent = CreateDefaultSubobject<UNNHealthComponent>(TEXT("HealthComponent"));
-	AbilityComponent = CreateDefaultSubobject<UNNAbility>(TEXT("AbilityComponent"));
+    AbilityComponent = CreateDefaultSubobject<UNNAbility>(TEXT("AbilityComponent"));
 
-    InitSmth<ANNEntityCharacter>(this);
+    InitEventComponent<ANNEntityCharacter>(this);
 }
 
 // Called when the game starts or when spawned
@@ -34,7 +34,6 @@ void ANNEntityCharacter::Tick(float DeltaTime)
 {
     Super::Tick(DeltaTime);
 }
-
 
 // Events
 void ANNEntityCharacter::OnActorEnter(AActor* OtherActor)
@@ -56,19 +55,50 @@ void ANNEntityCharacter::OnDeath()
 // Functions
 
 // Movement
-void ANNEntityCharacter::Move()
+void ANNEntityCharacter::Move(FVector Direction)
 {
-    //LOG
-	UE_LOG(LogTemp, Warning, TEXT("Move"));
-   
-	FVector Direction = FRotationMatrix(Controller->GetControlRotation()).GetScaledAxis(EAxis::X);
-	AddMovementInput(Direction, 1.0f);
+    if (!Controller) return; // Vérification de validité du contrôleur
 
-	Direction = FRotationMatrix(Controller->GetControlRotation()).GetScaledAxis(EAxis::Y);
-	AddMovementInput(Direction, 1.0f);
+    // Si c'est un joueur
+    if (Controller->IsA(APlayerController::StaticClass()))
+    {
+        //LOG
+        UE_LOG(LogTemp, Warning, TEXT("Move"));
+        //LOG des vecteurs
+        UE_LOG(LogTemp, Warning, TEXT("Direction : %s"), *Direction.ToString());
+        //LOG de maxSpeed  
+        UE_LOG(LogTemp, Warning, TEXT("MaxSpeed : %f"), GetCharacterMovement()->MaxWalkSpeed);
+
+        AddMovementInput(Direction.RightVector, 1.5f);
+        AddMovementInput(Direction.ForwardVector, 1.5f);
+    }
+    else // Si c'est une IA
+    {
+       /* AAIController* AIController = Cast<AAIController>(GetController());
+        if (AIController)
+        {
+            AIController->MoveToLocation(GetActorLocation() + Direction * 100.0f);
+        }*/
+    }
 }
 
-void ANNEntityCharacter::Look()
+void ANNEntityCharacter::Look(FVector Direction)
 {
+    if (!Controller) return; // Vérification de validité du contrôleur
+    // Si c'est un joueur
+    if (Controller->IsA(APlayerController::StaticClass()))
+    {
+        AddControllerYawInput(Direction.X);
+        AddControllerPitchInput(Direction.Y);
+        //LOG
+        UE_LOG(LogTemp, Warning, TEXT("Look"));
+    }
+    else // Si c'est une IA
+    {
+        /*AAIController* AIController = Cast<AAIController>(GetController());
+        if (AIController)
+        {
+            AIController->MoveToLocation(GetActorLocation() + Direction * 100.0f);
+        }*/
+    }
 }
-

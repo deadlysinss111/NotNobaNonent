@@ -42,5 +42,11 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Entity")
 	class UInputAction* LookAction;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Entity")
 	class UCameraComponent* Camera;
+
+
+protected:
+	void HandlePlayerInputMove(const FInputActionValue& InputValue);;
+	void HandlePlayerLook(const FInputActionValue& InputValue);
 };

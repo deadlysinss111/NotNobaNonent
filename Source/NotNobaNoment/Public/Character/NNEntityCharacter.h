@@ -9,6 +9,7 @@
 #include "Component/NNHealthComponent.h"
 #include "Component/NNTriggerComponent.h"
 #include "Abilities/NNAbility.h"
+#include <InputAction.h>
 
 #include "NNEntityCharacter.generated.h"
 
@@ -54,7 +55,7 @@ public:
 protected:
 	// Movement
 	UFUNCTION()
-	void Move();
+	void Move(FVector Direction);
 	UFUNCTION()
-	void Look();
+	void Look(FVector Direction);
 };
