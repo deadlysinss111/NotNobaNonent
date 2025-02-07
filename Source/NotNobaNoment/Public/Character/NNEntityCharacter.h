@@ -39,7 +39,7 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-protected:
+
 	// INNEntityInterface
 	UFUNCTION()
 	virtual void OnActorEnter(AActor* OtherActor) override {};
