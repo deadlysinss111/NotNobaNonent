@@ -14,7 +14,8 @@ ANNPlayerCharacter::ANNPlayerCharacter()
 
 void ANNPlayerCharacter::BeginPlay()
 {
-    
+    Super::BeginPlay();
+
     if (_abilitySet != NULL) {
         _attack = NewObject<UNNAbility>(this, _abilitySet->_attack);
         _attack->Init(this);

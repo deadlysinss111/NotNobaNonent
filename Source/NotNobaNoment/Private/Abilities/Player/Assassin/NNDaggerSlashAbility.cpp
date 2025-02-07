@@ -15,6 +15,8 @@ void UNNDaggerSlashAbility::Init(APawn* owner) {
 
 	//for(UStaticMeshComponent** comp : StaticComps)
 
+	_dagger = Cast<ANNDagger>(_owner->FindComponentByTag<UActorComponent>(TEXT("Dagger")));
+
 	FString AssetPath = FString::Printf(TEXT("NiagaraSystem'/Game/Entities/Heroes/Assassin/Abilities/DaggerSlash/DaggerSlashFX.DaggerSlashFX'"));
 	_slashFX = Cast<UNiagaraSystem>(StaticLoadObject(UNiagaraSystem::StaticClass(), this, *AssetPath));
 
@@ -29,14 +31,15 @@ void UNNDaggerSlashAbility::Init(APawn* owner) {
 
 void UNNDaggerSlashAbility::Trigger() {
 	//_owner->GetComponentByClass< UNiagaraSystem>();
-	//_dagger->Slash();
+	
+	_dagger->Slash();
 
 	_owner->GetComponentByClass<USkeletalMeshComponent>()->GetAnimInstance()->RequestTransitionEvent(TEXT("Attack"), .1f, (ETransitionRequestQueueMode)0, (ETransitionRequestOverwriteMode)0);
 
 	auto var = UNiagaraFunctionLibrary::SpawnSystemAtLocation(
 		_owner,
 		_slashFX,
-		_owner->GetActorLocation(),
+		_owner->GetActorLocation() + FVector(0, 0, 1),
 		_owner->GetActorRotation(),
 		FVector(1.0f), // Scale
 		true,          // Auto Destroy
