@@ -1,5 +1,3 @@
-#include "GameFramework/CharacterMovementComponent.h"
-
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "Character/NNEntityCharacter.h"
@@ -66,8 +64,6 @@ void ANNEntityCharacter::Move(FVector Direction)
         UE_LOG(LogTemp, Warning, TEXT("Move"));
         //LOG des vecteurs
         UE_LOG(LogTemp, Warning, TEXT("Direction : %s"), *Direction.ToString());
-        //LOG de maxSpeed  
-        UE_LOG(LogTemp, Warning, TEXT("MaxSpeed : %f"), GetCharacterMovement()->MaxWalkSpeed);
 
         AddMovementInput(Direction.RightVector, 1.5f);
         AddMovementInput(Direction.ForwardVector, 1.5f);
