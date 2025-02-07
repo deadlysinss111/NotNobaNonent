@@ -4,7 +4,10 @@
 
 #include "CoreMinimal.h"
 #include "Abilities/NNAbility.h"
+#include "NNDagger.h"
 #include "NNThrowDaggerAbility.generated.h"
+
+DECLARE_DYNAMIC_DELEGATE(FActionToTrigger);
 
 /**
  * 
@@ -15,12 +18,18 @@ class NOTNOBANOMENT_API UNNThrowDaggerAbility : public UNNAbility
 	GENERATED_BODY()
 
 private:
-	bool _isGrounded;
+	FActionToTrigger _currentAction;
+
+	UPROPERTY(EditAnywhere)
+	ANNDagger* _dagger;
 	
 public:
 	void Init(APawn* owner) override;
 	void Trigger() override;
+
+	UFUNCTION()
 	void Throw();
+	UFUNCTION()
 	void Jump();
 
 };

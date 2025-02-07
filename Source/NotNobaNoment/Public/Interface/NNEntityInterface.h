@@ -34,7 +34,9 @@ public:
 
 
 	// Events
-	virtual void OnActorEnter(AActor* OtherActor) {};
+	virtual void OnActorEnter(AActor* OtherActor) {
+		GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, TEXT("Actor enter collide"));
+	};
 	virtual void OnActorExit(AActor* OtherActor) {};
    
 	virtual void OnHealthChanged(float CurrentHealth) {};

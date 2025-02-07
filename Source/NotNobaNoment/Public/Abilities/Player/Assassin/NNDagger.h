@@ -8,6 +8,9 @@
 #include <functional>
 #include "NNDagger.generated.h"
 
+DECLARE_DYNAMIC_DELEGATE_OneParam(FStateAction, AActor*, OtherActor);
+
+
 UCLASS()
 class NOTNOBANOMENT_API ANNDagger : public AActor, public INNEntityInterface
 {
@@ -26,9 +29,16 @@ public:
 	ANNDagger();
 
 public:
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
+	UNNTriggerComponent* TriggerComponent;
+
+public:
 	DaggerState _currentState;
 	//void(*_currentStateAction)(AActor* OtherActor);
-	std::function<void(AActor*)> _currentStateAction;
+	UPROPERTY()
+	FStateAction _currentStateAction;
+	
+	//std::function<void(AActor*)> _currentStateAction;
 
 public:
 	virtual void BeginPlay() override;
@@ -36,14 +46,28 @@ public:
 
 	UFUNCTION()
 	virtual void OnActorEnter(AActor* OtherActor) override;
+	UFUNCTION()
+	virtual void OnActorExit(AActor* OtherActor) override {};
+
+	UFUNCTION()
+	virtual void OnHealthChanged(float CurrentHealth) override {};
+	UFUNCTION()
+	virtual void OnDeath() override {};
 
 
 public:
 	void ChangeState(DaggerState newState);
 
+	UFUNCTION(BlueprintCallable)
+	void SetBackToHanded();
+
+	UFUNCTION()
 	void HandedOverlapAction(AActor* OtherActor);
+	UFUNCTION()
 	void HittingOverlapAction(AActor* OtherActor);
+	UFUNCTION()
 	void FlyingOverlapAction(AActor* OtherActor);
+	UFUNCTION()
 	void GroundedOverlapAction(AActor* OtherActor);
 
 	void Slash();

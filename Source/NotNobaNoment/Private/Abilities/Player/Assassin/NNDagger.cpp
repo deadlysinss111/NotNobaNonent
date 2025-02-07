@@ -8,8 +8,11 @@ ANNDagger::ANNDagger()
 {
 	PrimaryActorTick.bCanEverTick = true;
 
-	/*InitSmth<ANNDagger>(this);
-	_currentStateAction = std::bind_front(&ANNDagger::HandedOverlapAction, this);*/
+	TriggerComponent = CreateDefaultSubobject<UNNTriggerComponent>(TEXT("TriggerComponent"));
+
+	InitSmth<ANNDagger>(this);
+
+	_currentStateAction.BindUFunction(this, FName("HandedOverlapAction"));
 
 }
 
@@ -19,7 +22,6 @@ void ANNDagger::BeginPlay()
 	
 }
 
-// Called every frame
 void ANNDagger::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
@@ -28,9 +30,9 @@ void ANNDagger::Tick(float DeltaTime)
 
 void ANNDagger::OnActorEnter(AActor* OtherActor)
 {
-	// Could someone tell me why that line makes crash??
-	//_currentStateAction(OtherActor);
-	GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, TEXT("overlap"));
+	if (_currentStateAction.IsBound()) {
+		_currentStateAction.Execute(OtherActor);
+	}
 }
 
 void ANNDagger::ChangeState(DaggerState newState)
@@ -38,22 +40,22 @@ void ANNDagger::ChangeState(DaggerState newState)
 	_currentState = newState;
 	switch (newState) {
 		case DaggerState::Handed:
-			_currentStateAction = std::bind_front(&ANNDagger::HandedOverlapAction, this);
+			_currentStateAction.BindUFunction(this, FName("HandedOverlapAction"));
 			break;
 		case DaggerState::Hitting:
-			_currentStateAction = std::bind_front(&ANNDagger::HittingOverlapAction, this);
+			_currentStateAction.BindUFunction(this, FName("HittingOverlapAction"));
 			break;
 		case DaggerState::Flying:
-			_currentStateAction = std::bind_front(&ANNDagger::FlyingOverlapAction, this);
+			_currentStateAction.BindUFunction(this, FName("FlyingOverlapAction"));
 			break;
 		case DaggerState::Grounded:
-			_currentStateAction = std::bind_front(&ANNDagger::GroundedOverlapAction, this);
+			_currentStateAction.BindUFunction(this, FName("GroundedOverlapAction"));
 			break;
 	}
 }
 
 void ANNDagger::HandedOverlapAction(AActor* OtherActor) {
-	GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, TEXT("HANDED"));
+
 }
 
 void ANNDagger::HittingOverlapAction(AActor* OtherActor) {
@@ -61,7 +63,18 @@ void ANNDagger::HittingOverlapAction(AActor* OtherActor) {
 }
 
 void ANNDagger::FlyingOverlapAction(AActor* OtherActor) {
-	GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, TEXT("FLYING"));
+	if (OtherActor->ActorHasTag("Wall")) {
+		if (UPrimitiveComponent* PhysComp = Cast<UPrimitiveComponent>(GetRootComponent()))
+		{
+			PhysComp->SetSimulatePhysics(false);
+			PhysComp->SetEnableGravity(false);
+			PhysComp->SetPhysicsLinearVelocity(FVector::ZeroVector);
+			PhysComp->SetPhysicsAngularVelocityInDegrees(FVector::ZeroVector);
+			//PhysComp->AddImpulse(FVector(0, 0, 100000));
+		}
+		ChangeState(DaggerState::Grounded);
+		SetActorRotation(FRotator::MakeFromEuler(FVector(150, 0, 0)));
+	}
 }
 
 void ANNDagger::GroundedOverlapAction(AActor* OtherActor) {
@@ -70,10 +83,16 @@ void ANNDagger::GroundedOverlapAction(AActor* OtherActor) {
 
 void ANNDagger::Slash()
 {
-	GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, TEXT("SLASH"));
+	ChangeState(DaggerState::Hitting);
+	// The state is set back to Handed trough the animation
+}
+
+void ANNDagger::SetBackToHanded() {
+	ChangeState(DaggerState::Handed);
+	GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, TEXT("backtohanded"));
 }
 
 void ANNDagger::Throw()
 {
-
+	
 }

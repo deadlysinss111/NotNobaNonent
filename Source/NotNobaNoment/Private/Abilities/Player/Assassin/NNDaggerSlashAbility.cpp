@@ -15,11 +15,19 @@ void UNNDaggerSlashAbility::Init(APawn* owner) {
 
 	//for(UStaticMeshComponent** comp : StaticComps)
 
-	_dagger = Cast<ANNDagger>(_owner->FindComponentByTag<UActorComponent>(TEXT("Dagger")));
+	TArray<AActor*> AttachedActors;
+	_owner->GetAttachedActors(AttachedActors);
+	for (AActor* Child : AttachedActors)
+	{
+		ANNDagger* dagger = Cast<ANNDagger>(Child);
+		if (dagger)
+		{
+			_dagger = dagger;
+		}
+	}
 
 	FString AssetPath = FString::Printf(TEXT("NiagaraSystem'/Game/Entities/Heroes/Assassin/Abilities/DaggerSlash/DaggerSlashFX.DaggerSlashFX'"));
 	_slashFX = Cast<UNiagaraSystem>(StaticLoadObject(UNiagaraSystem::StaticClass(), this, *AssetPath));
-
 	if (!_slashFX)
 	{
 		GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Blue, TEXT("fail to load fx"));
@@ -47,10 +55,4 @@ void UNNDaggerSlashAbility::Trigger() {
 		ENCPoolMethod::None,
 		true           // Preload assets
 	);
-
-	if(var!= NULL)
-		GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Blue, TEXT("null"));
-
-	if (GEngine)
-		GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, TEXT("child"));
 }
