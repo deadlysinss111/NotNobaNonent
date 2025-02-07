@@ -15,13 +15,20 @@
 
 #include "NNGameMode.generated.h"
 
-// TODO: Move this comment block over to the GameMode concerned
-/**
- *  Custom Game Mode
- * 
- *  This is meant to handle victory and defeat of any level that might be made for the game.
- *  There probably won't be any other Game Mode or win/loss conditions, hence the generic name.
- */
+
+
+// Abstraction for easier exit conditions index access.
+UENUM()
+enum class ENNExitCond
+{
+	UNKNOWN = -1,
+
+	Quit = 0,
+	Loss,
+	Win,
+
+	COUNT UMETA(Hidden)
+};
 
 /**
  *  Custom Game Mode
@@ -40,8 +47,11 @@ class NOTNOBANOMENT_API ANNGameMode : public AGameModeBase
 	/*  ----------    */
    /*  CLASS FIELDS  */
   /*    ----------  */
-	ELevelName _ELevelOnExit;
-	TSet<bool> _setExitConds;
+	// TODO: Decide on UPROPERTIES
+public:
+	ENNLevel _ELevelOnExit;
+private:
+	TArray<TMap<FString, bool>> _ExitConds;		// Private so the setter can have extra logic
 	
 
 
@@ -54,7 +64,20 @@ public:
 	~ANNGameMode();
 
 protected:
-	// Enter and Exit behaviours of the Game Mode
+	// Enter behaviour of the Game Mode
 	virtual void BeginPlay() override;
-	virtual void TryExitGameMode();
+
+	/* _ExitConds getter& setter */
+	
+	const TArray<TMap<FString, bool>>& GetExitConds();
+	const TOptional<TMap<FString, bool>> GetExitCondsMap(ENNExitCond ARGeExitCond);
+	void SetExitCondsMap(ENNExitCond ARGeExitCond, const TMap<FString, bool>& ARGnewExitCondMap);
+
+private:
+	// Exit behaviour of the Game Mode
+	virtual void ExitGameMode();
+
+	/* Heplers & Tools */
+	bool IsLevelIndexOOB(unsigned int ARGindex);
+	bool IsLevelIndexOOB(ENNExitCond ARGeExitCond);
 };

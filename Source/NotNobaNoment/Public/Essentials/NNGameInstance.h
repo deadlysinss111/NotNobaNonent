@@ -15,11 +15,14 @@
 
 // Abstraction for easier level loading. Keep it up to date please :3
 UENUM()
-enum ELevelName
+enum class ENNLevel
 {
-	UNKNOWN = -1 UMETA(Hidden),
-	MenuScene,
-	PlayScene
+	UNKNOWN = -1,
+
+	MenuScene = 0,
+	PlayScene,
+
+	COUNT UMETA(Hidden)
 };
 
 /**
@@ -40,6 +43,7 @@ class NOTNOBANOMENT_API UNNGameInstance : public UGameInstance
 	/*  ----------    */
    /*  CLASS FIELDS  */
   /*    ----------  */
+	// TODO: Decide on UPROPERTIES
 	TArray<FName> _arrLevels;
 	
 
@@ -58,9 +62,10 @@ public:
 
 	/* Level loaders */
 	void LoadLevel(unsigned int ARGindex);
-	void LoadLevel(ELevelName ARGeLevelName);
+	void LoadLevel(ENNLevel ARGeLevel);
 
 private:
 	/* Heplers & Tools */
 	bool IsLevelIndexOOB(unsigned int ARGindex);
+	bool IsLevelIndexOOB(ENNLevel ARGeLevel);
 };

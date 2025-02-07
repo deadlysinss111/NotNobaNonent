@@ -56,9 +56,9 @@ void UNNGameInstance::LoadLevel(unsigned int ARGindex)
 	if (!IsLevelIndexOOB(ARGindex))
 		UGameplayStatics::OpenLevel(GetWorld()/*<-- Context arg*/, _arrLevels[ARGindex]);
 }
-void UNNGameInstance::LoadLevel(ELevelName ARGeLevelName)
+void UNNGameInstance::LoadLevel(ENNLevel ARGeLevel)
 {
-	unsigned int index = (unsigned int)ARGeLevelName;
+	unsigned int index = (unsigned int)ARGeLevel;
 
 	// Loads the level if the index is a valid one.
 	if (! IsLevelIndexOOB(index))
@@ -79,4 +79,11 @@ bool UNNGameInstance::IsLevelIndexOOB(unsigned int ARGindex)
 
 	// Valid index scenario
 	else return false;
+}
+bool UNNGameInstance::IsLevelIndexOOB(ENNLevel ARGeLevel)
+{
+	// Promotes the enum type into a uint type
+	unsigned int index = (unsigned int)ARGeLevel;
+
+	return IsLevelIndexOOB(index);
 }
