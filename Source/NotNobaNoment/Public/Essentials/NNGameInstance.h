@@ -6,10 +6,21 @@
 #include "Engine/GameInstance.h"
 
 // Extra includes
+#include "AssetRegistry/AssetRegistryModule.h"	// To find all level in the project
+#include "Kismet/GameplayStatics.h"				// To load levels
 
 #include "NNGameInstance.generated.h"
 
 
+
+// Abstraction for easier level loading. Keep it up to date please :3
+UENUM()
+enum ELevelName
+{
+	UNKNOWN = -1 UMETA(Hidden),
+	MenuScene,
+	PlayScene
+};
 
 /**
  *  Custom Game Instance
@@ -25,7 +36,14 @@ UCLASS()
 class NOTNOBANOMENT_API UNNGameInstance : public UGameInstance
 {
 	GENERATED_BODY()
+
+	/*  ----------    */
+   /*  CLASS FIELDS  */
+  /*    ----------  */
+	TArray<FName> _arrLevels;
 	
+
+
 	/*  -----------    */
    /*  CLASS METHODS  */
   /*    -----------  */
@@ -33,4 +51,16 @@ public:
 	// Constru & Destru
 	UNNGameInstance(const FObjectInitializer& ARG_ObjectInitializer);
 	~UNNGameInstance();
+
+	// BeginPlay override to become aware of the levels available for the game.
+	virtual void Init() override;
+
+
+	/* Level loaders */
+	void LoadLevel(unsigned int ARGindex);
+	void LoadLevel(ELevelName ARGeLevelName);
+
+private:
+	/* Heplers & Tools */
+	bool IsLevelIndexOOB(unsigned int ARGindex);
 };
