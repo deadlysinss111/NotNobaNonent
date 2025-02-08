@@ -1,6 +1,5 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
-
 #include "Component/NNTriggerComponent.h"
 #include "Components/BoxComponent.h"
 #include <Components/CapsuleComponent.h>
@@ -10,98 +9,105 @@
 // Sets default values for this component's properties
 UNNTriggerComponent::UNNTriggerComponent()
 {
-	// Créer un composant de collision par défaut
-	CollisionComponent = CreateDefaultSubobject<UBoxComponent>(TEXT("CollisionComponent"));
+    // Créer un composant de collision par défaut
+    CollisionComponent = CreateDefaultSubobject<UBoxComponent>(TEXT("CollisionComponent"));
 
-	// Configurer des valeurs par défaut pour les collisions
-	CollisionComponent->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
-	CollisionComponent->SetCollisionResponseToAllChannels(ECR_Ignore);
-	CollisionComponent->SetCollisionResponseToChannel(ECC_Pawn, ECR_Overlap);
+    // Configurer des valeurs par défaut pour les collisions
+    CollisionComponent->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
+    CollisionComponent->SetCollisionResponseToAllChannels(ECR_Ignore);
+    CollisionComponent->SetCollisionResponseToChannel(ECC_Pawn, ECR_Overlap);
 
-	// Attacher les événements de collision
-	CollisionComponent->OnComponentBeginOverlap.AddDynamic(this, &UNNTriggerComponent::HandleBeginOverlap);
-	CollisionComponent->OnComponentEndOverlap.AddDynamic(this, &UNNTriggerComponent::HandleEndOverlap);
-}
-
-
-// Called when the game starts
-void UNNTriggerComponent::BeginPlay()
-{
-	Super::BeginPlay();
-
-	//// Vérifie si le owner posséde dans ça hierarchie un box component ou un capsule component ou un sphere component
-	//if (GetOwner()->FindComponentByClass<UBoxComponent>())
-	//{
-	//	setCollisionComponent(GetOwner()->FindComponentByClass<UBoxComponent>());
-	//}
-	//else if (GetOwner()->FindComponentByClass<UCapsuleComponent>())
-	//{
-	//	setCollisionComponent(GetOwner()->FindComponentByClass<UCapsuleComponent>());
-	//}
-	//else if (GetOwner()->FindComponentByClass<USphereComponent>())
-	//{
-	//	setCollisionComponent(GetOwner()->FindComponentByClass<USphereComponent>());
-	//}
-	//else
-	//{
-	//	UE_LOG(LogTemp, Error, TEXT("The owner does not have a valid collision component"));
-	//}
-}
-
-void UNNTriggerComponent::setCollisionComponent(UPrimitiveComponent* NewCollisionComponent)
-{
-    if (USceneComponent* SceneComp = Cast<USceneComponent>(NewCollisionComponent))
-    {
-        if (GetOwner() && GetOwner()->GetRootComponent() && GetOwner()->GetRootComponent() != NewCollisionComponent)
-        {
-            SceneComp->AttachToComponent(
-                GetOwner()->GetRootComponent(),
-                FAttachmentTransformRules::KeepRelativeTransform
-            );
-        }
-        else
-        {
-            UE_LOG(LogTemp, Warning, TEXT("Owner or RootComponent is null!"));
-        }
-    }
-    else
-    {
-        UE_LOG(LogTemp, Error, TEXT("NewCollisionComponent is not a USceneComponent and cannot be attached!"));
-        return;
-    }
-
-    // Détacher les anciens événements
-    if (CollisionComponent)
-    {
-        CollisionComponent->OnComponentBeginOverlap.RemoveAll(this);
-        CollisionComponent->OnComponentEndOverlap.RemoveAll(this);
-    }
-
-	//Supprimer l'ancien composant de collision
-	CollisionComponent->DestroyComponent();
-
-    // Mettre à jour la référence du composant
-    CollisionComponent = NewCollisionComponent;
-
-    // Réattacher les événements de collision
+    // Attacher les événements de collision
     CollisionComponent->OnComponentBeginOverlap.AddDynamic(this, &UNNTriggerComponent::HandleBeginOverlap);
     CollisionComponent->OnComponentEndOverlap.AddDynamic(this, &UNNTriggerComponent::HandleEndOverlap);
 }
 
+void UNNTriggerComponent::BeginPlay()
+{
+    Super::BeginPlay();
+
+    AActor* OwnerActor = GetOwner();
+    if (!OwnerActor)
+    {
+        UE_LOG(LogTemp, Error, TEXT("Owner is null!"));
+        return;
+    }
+
+    // Vérifie si le RootComponent est déjà un composant de collision
+    if (UPrimitiveComponent* RootCollision = Cast<UPrimitiveComponent>(OwnerActor->GetRootComponent()))
+    {
+        UE_LOG(LogTemp, Warning, TEXT("Using RootComponent as collision component: %s"), *RootCollision->GetName());
+        setCollisionComponent(RootCollision);
+        return;
+    }
+
+    // Cherche un autre composant de collision
+    TArray<UPrimitiveComponent*> PossibleCollisions;
+    PossibleCollisions.Add(OwnerActor->FindComponentByClass<UBoxComponent>());
+    PossibleCollisions.Add(OwnerActor->FindComponentByClass<UCapsuleComponent>());
+    PossibleCollisions.Add(OwnerActor->FindComponentByClass<USphereComponent>());
+
+    for (UPrimitiveComponent* Comp : PossibleCollisions)
+    {
+        if (Comp && Comp != OwnerActor->GetRootComponent())
+        {
+            UE_LOG(LogTemp, Warning, TEXT("Found a suitable collision component: %s"), *Comp->GetName());
+            setCollisionComponent(Comp);
+            return;
+        }
+    }
+}
+
+
+void UNNTriggerComponent::setCollisionComponent(UPrimitiveComponent* NewCollisionComponent)
+{
+    if (!NewCollisionComponent)
+    {
+        UE_LOG(LogTemp, Error, TEXT("NewCollisionComponent is null! Cannot set collision component."));
+        return;
+    }
+
+    AActor* OwnerActor = GetOwner();
+    if (!OwnerActor)
+    {
+        UE_LOG(LogTemp, Error, TEXT("Owner is null!"));
+        return;
+    }
+
+    if (CollisionComponent == NewCollisionComponent)
+    {
+        UE_LOG(LogTemp, Warning, TEXT("NewCollisionComponent is the same as the current one. Skipping."));
+        return;
+    }
+
+    if (CollisionComponent)
+    {
+        CollisionComponent->OnComponentBeginOverlap.RemoveAll(this);
+        CollisionComponent->OnComponentEndOverlap.RemoveAll(this);
+        CollisionComponent->DestroyComponent();
+    }
+
+    CollisionComponent = NewCollisionComponent;
+
+    CollisionComponent->OnComponentBeginOverlap.AddDynamic(this, &UNNTriggerComponent::HandleBeginOverlap);
+    CollisionComponent->OnComponentEndOverlap.AddDynamic(this, &UNNTriggerComponent::HandleEndOverlap);
+}
+
+
 void UNNTriggerComponent::HandleBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	// Vérifie si l'autre acteur n'est pas nul et n'est pas le propriétaire de ce composant
-	if (OtherActor && OtherActor != GetOwner())
-	{
-		// Diffuse l'événement d'entrée d'acteur
-		OnActorEnter.Broadcast(OtherActor);
-	}
+    // Vérifie si l'autre acteur n'est pas nul et n'est pas le propriétaire de ce composant
+    if (OtherActor && OtherActor != GetOwner())
+    {
+        // Diffuse l'événement d'entrée d'acteur
+        OnActorEnter.Broadcast(OtherActor);
+    }
 }
 
 void UNNTriggerComponent::HandleEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
 {
-	if (OtherActor && OtherActor != GetOwner())
-	{
-		OnActorExit.Broadcast(OtherActor);
-	}
+    if (OtherActor && OtherActor != GetOwner())
+    {
+        OnActorExit.Broadcast(OtherActor);
+    }
 }
