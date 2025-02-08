@@ -4,6 +4,8 @@
 #include "Component/NNTriggerComponent.h"
 #include "Components/BoxComponent.h"
 #include <Components/CapsuleComponent.h>
+#include "GameFramework/Character.h"
+#include <Components/SphereComponent.h>
 
 // Sets default values for this component's properties
 UNNTriggerComponent::UNNTriggerComponent()
@@ -21,38 +23,36 @@ UNNTriggerComponent::UNNTriggerComponent()
 	CollisionComponent->OnComponentEndOverlap.AddDynamic(this, &UNNTriggerComponent::HandleEndOverlap);
 }
 
-#include "GameFramework/Character.h"
-#include <Components/SphereComponent.h>
 
 // Called when the game starts
 void UNNTriggerComponent::BeginPlay()
 {
 	Super::BeginPlay();
 
-	// Vérifie si le owner posséde dans ça hierarchie un box component ou un capsule component ou un sphere component
-	if (GetOwner()->FindComponentByClass<UBoxComponent>())
-	{
-		setCollisionComponent(GetOwner()->FindComponentByClass<UBoxComponent>());
-	}
-	else if (GetOwner()->FindComponentByClass<UCapsuleComponent>())
-	{
-		setCollisionComponent(GetOwner()->FindComponentByClass<UCapsuleComponent>());
-	}
-	else if (GetOwner()->FindComponentByClass<USphereComponent>())
-	{
-		setCollisionComponent(GetOwner()->FindComponentByClass<USphereComponent>());
-	}
-	else
-	{
-		UE_LOG(LogTemp, Error, TEXT("The owner does not have a valid collision component"));
-	}
+	//// Vérifie si le owner posséde dans ça hierarchie un box component ou un capsule component ou un sphere component
+	//if (GetOwner()->FindComponentByClass<UBoxComponent>())
+	//{
+	//	setCollisionComponent(GetOwner()->FindComponentByClass<UBoxComponent>());
+	//}
+	//else if (GetOwner()->FindComponentByClass<UCapsuleComponent>())
+	//{
+	//	setCollisionComponent(GetOwner()->FindComponentByClass<UCapsuleComponent>());
+	//}
+	//else if (GetOwner()->FindComponentByClass<USphereComponent>())
+	//{
+	//	setCollisionComponent(GetOwner()->FindComponentByClass<USphereComponent>());
+	//}
+	//else
+	//{
+	//	UE_LOG(LogTemp, Error, TEXT("The owner does not have a valid collision component"));
+	//}
 }
 
 void UNNTriggerComponent::setCollisionComponent(UPrimitiveComponent* NewCollisionComponent)
 {
     if (USceneComponent* SceneComp = Cast<USceneComponent>(NewCollisionComponent))
     {
-        if (GetOwner() && GetOwner()->GetRootComponent())
+        if (GetOwner() && GetOwner()->GetRootComponent() && GetOwner()->GetRootComponent() != NewCollisionComponent)
         {
             SceneComp->AttachToComponent(
                 GetOwner()->GetRootComponent(),
@@ -76,6 +76,9 @@ void UNNTriggerComponent::setCollisionComponent(UPrimitiveComponent* NewCollisio
         CollisionComponent->OnComponentBeginOverlap.RemoveAll(this);
         CollisionComponent->OnComponentEndOverlap.RemoveAll(this);
     }
+
+	//Supprimer l'ancien composant de collision
+	CollisionComponent->DestroyComponent();
 
     // Mettre à jour la référence du composant
     CollisionComponent = NewCollisionComponent;

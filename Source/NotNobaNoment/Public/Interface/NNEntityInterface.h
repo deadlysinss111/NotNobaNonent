@@ -40,6 +40,7 @@ public:
 	virtual void OnHealthChanged(float CurrentHealth) {};
 	virtual void OnDeath() {};
 
+
 	template<typename T>
 		void InitEventComponent(T* Owner) {
 			//Get the trigger component of the owner
