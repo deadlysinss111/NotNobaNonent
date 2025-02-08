@@ -7,7 +7,7 @@
 
 #include "Interface/NNEntityInterface.h"
 #include "Component/NNHealthComponent.h"
-#include "Component/NNTriggerComponent.h"
+#include "Component/NNCollisionComponent.h"
 #include "Abilities/NNAbility.h"
 #include <InputAction.h>
 
@@ -29,7 +29,7 @@ protected:
 
 	// Components
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
-	UNNTriggerComponent* TriggerComponent;
+	UNNCollisionComponent* CollisionComponent;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
 	UNNHealthComponent* HealthComponent;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
@@ -41,10 +41,16 @@ public:
 
 
 	// INNEntityInterface
+
+	virtual UNNCollisionComponent* GetCollisionComponent() const override { return CollisionComponent; };
+	virtual UNNHealthComponent* GetHealthComponent() const override { return HealthComponent; };
+
 	UFUNCTION()
 	virtual void OnActorEnter(AActor* OtherActor) override {};
 	UFUNCTION()
 	virtual void OnActorExit(AActor* OtherActor) override {};
+	UFUNCTION()
+	virtual void OnActorHit(AActor* OtherActor, const FHitResult& Hit) override {};
 
 	UFUNCTION()
 	virtual void OnHealthChanged(float CurrentHealth) override {};
