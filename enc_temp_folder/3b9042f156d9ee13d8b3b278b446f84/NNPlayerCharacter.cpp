@@ -62,7 +62,7 @@ void ANNPlayerCharacter::Tick(float DeltaTime)
     UGameplayStatics::GetPlayerController(GetWorld(), 0)->DeprojectMousePositionToWorld()
     UE_LOG(LogTemp, Warning, TEXT("Mouse Location: %f, %f"), mouseX, mouseY);*/
 
-    FHitResult Hit;
+   /* FHitResult Hit;
     bool bHitSuccessful = UGameplayStatics::GetPlayerController(GetWorld(), 0)->GetHitResultUnderCursor(ECollisionChannel::ECC_Visibility, true, Hit);
 
     FVector CachedDestination;
@@ -72,13 +72,10 @@ void ANNPlayerCharacter::Tick(float DeltaTime)
         CachedDestination = Hit.Location;
     }
 
-    UE_LOG(LogTemp, Warning, TEXT("Mouse Location: %f, %f"), CachedDestination.X, CachedDestination.Y);
-
-    FVector worldDir = (CachedDestination - GetActorLocation()).GetSafeNormal();
-    FVector alteredDir = FVector(worldDir.X, worldDir.Y, 0);
+    FVector WorldDirection = (CachedDestination - ControlledPawn->GetActorLocation()).GetSafeNormal();
 
     
-    GetMesh()->SetWorldRotation(FRotationMatrix::MakeFromX(alteredDir).Rotator());
+    GetOwner->SetActorRotation(FRotationMatrix::MakeFromX(WorldDirection).Rotator());*/
 }
 
 /**
