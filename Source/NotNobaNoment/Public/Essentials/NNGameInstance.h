@@ -12,19 +12,6 @@
 #include "NNGameInstance.generated.h"
 
 
-
-// Abstraction for easier level loading. Keep it up to date please :3
-UENUM()
-enum class ENNLevel
-{
-	UNKNOWN = -1,
-
-	MenuScene = 0,
-	PlayScene,
-
-	COUNT UMETA(Hidden)
-};
-
 /**
  *  Custom Game Instance
  * 
@@ -40,13 +27,6 @@ class NOTNOBANOMENT_API UNNGameInstance : public UGameInstance
 {
 	GENERATED_BODY()
 
-	/*  ----------    */
-   /*  CLASS FIELDS  */
-  /*    ----------  */
-	TArray<FName> _arrLevels;
-	
-
-
 	/*  -----------    */
    /*  CLASS METHODS  */
   /*    -----------  */
@@ -58,13 +38,6 @@ public:
 	// BeginPlay override to become aware of the levels available for the game.
 	virtual void Init() override;
 
-
 	/* Level loaders */
-	void LoadLevel(unsigned int ARGindex);
-	void LoadLevel(ENNLevel ARGeLevel);
-
-private:
-	/* Heplers & Tools */
-	bool IsLevelIndexOOB(unsigned int ARGindex);
-	bool IsLevelIndexOOB(ENNLevel ARGeLevel);
+	void LoadLevel(FString ARGlevelName);
 };

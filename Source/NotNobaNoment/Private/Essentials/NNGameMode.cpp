@@ -13,20 +13,20 @@ DEFINE_LOG_CATEGORY(NN_GameMode);
 // Constru & Destru
 ANNGameMode::ANNGameMode()
 {
-	// Temporary field initializations
 	// TODO: Use the correct custom classes when they exist.
+	
+	// Temporary field initializations
 	DefaultPawnClass = APawn::StaticClass();
-	DefaultPlayerName = FText::FromString("Player");
 	PlayerControllerClass = APlayerController::StaticClass();
-
 
 	// Default fields initializiation
 	HUDClass = ANNHUD::StaticClass();
 	GameStateClass = ANNGameState::StaticClass();
 
-	// Set to None since those will probably remain unused
-	PlayerStateClass = nullptr;
-	SpectatorClass = nullptr;
+	// Set to default Unreal stuff since those will probably remain unused
+	DefaultPlayerName = FText::FromString("Player");
+	PlayerStateClass = APlayerState::StaticClass();
+	SpectatorClass = ASpectatorPawn::StaticClass();
 }
 ANNGameMode::~ANNGameMode()
 {
@@ -38,25 +38,18 @@ ANNGameMode::~ANNGameMode()
 // Enter and Exit behaviours of the Game Mode
 void ANNGameMode::BeginPlay()
 {
-	// Intializes fields.
-	_ExitConds = TArray<TMap<FString, bool>>();
-	_ExitConds.Add(TMap<FString, bool>());		// Empty bool map for Quit conditions (index 0)
-	_ExitConds.Add(TMap<FString, bool>());		// Empty bool map for Loss conditions (index 1)
-	_ExitConds.Add(TMap<FString, bool>());		// Empty bool map for Win conditions (index 2)
-
-	// Sets fields default values.
-	_ELevelOnExit = ENNLevel::UNKNOWN;
-	_ExitConds[(unsigned int) ENNExitCond::Quit].Add(TEXT("bPlayerWannaQuit"), false);
-	_ExitConds[(unsigned int) ENNExitCond::Loss].Add(TEXT("bPlayerDied"), false);
-
-
 	// AGameModeBase default BeginPlay call.
 	Super::BeginPlay();
+
+	// Intializes fields.
+	_ExitConds = TArray<TMap<FString, bool>>();
+	_LevelsToLoadOnExit = TArray<FString>();
+	_GameInstance = (UNNGameInstance*) UGameplayStatics::GetGameInstance(GetWorld());
 }
-void ANNGameMode::ExitGameMode()
+void ANNGameMode::ExitGameMode(FString ARGlevelname)
 {
-	// Nothing special yet
-	UE_LOG(NN_GameMode, Log, TEXT("Conditions for exiting GameMode were met ! Exiting..."));
+	UE_LOG(NN_GameMode, Log, TEXT("Conditions for exiting GameMode were met ! Loading level %s..."), *ARGlevelname);
+	_GameInstance->LoadLevel(ARGlevelname);
 }
 
 
@@ -66,29 +59,29 @@ const TArray<TMap<FString, bool>>& ANNGameMode::GetExitConds()
 {
 	return _ExitConds;
 }
-const TOptional<TMap<FString, bool>> ANNGameMode::GetExitCondsMap(ENNExitCond ARGeExitCond)
+const TOptional<TMap<FString, bool>> ANNGameMode::GetExitCondsMap(unsigned int ARGexitCondIndex)
 {
-	if (!IsLevelIndexOOB(ARGeExitCond))
-		return _ExitConds[(int) ARGeExitCond];	// This returns a valid TOptional since a value is retuned AND TOptional has an implicit conversion :3 (TL;DR magic QoL).
+	if (!IsLevelIndexOOB(ARGexitCondIndex))
+		return _ExitConds[ARGexitCondIndex];	// This returns a valid TOptional since a value is retuned AND TOptional has an implicit conversion :3 (TL;DR magic QoL).
 	else
 		return TOptional<TMap<FString, bool>>();	// This returns an invalid TOptional since no value is passed in its constructor.
 }
-void ANNGameMode::SetExitCondsMap(ENNExitCond ARGeExitCond, const TMap<FString, bool>& ARGnewExitCondMap)
+void ANNGameMode::SetExitCondsMap(unsigned int ARGexitCondIndex, const TMap<FString, bool>& ARGnewExitCondMap)
 {
 	// Sets the new values
-	_ExitConds[(int) ARGeExitCond] = ARGnewExitCondMap;
+	_ExitConds[ARGexitCondIndex] = ARGnewExitCondMap;
 
 	// Try to exit the GameMode
-	TryExitGameMode(ARGeExitCond);
+	TryExitGameMode(ARGexitCondIndex);
 }
-void ANNGameMode::SetOneExitCond(ENNExitCond ARGeExitCond, FString ARGcondString, bool ARGbool)
+void ANNGameMode::SetOneExitCond(unsigned int ARGexitCondIndex, FString ARGcondString, bool ARGbool)
 {
 	// Sets the new value
-	bool* value = _ExitConds[(int)ARGeExitCond].Find(ARGcondString);
+	bool* value = _ExitConds[ARGexitCondIndex].Find(ARGcondString);
 	if (value != nullptr) *value = ARGbool;
 
 	// Try to exit the GameMode
-	TryExitGameMode(ARGeExitCond);
+	TryExitGameMode(ARGexitCondIndex);
 }
 
 
@@ -106,17 +99,10 @@ bool ANNGameMode::IsLevelIndexOOB(unsigned int ARGindex)
 	// Valid index scenario
 	else return false;
 }
-bool ANNGameMode::IsLevelIndexOOB(ENNExitCond ARGeExitCond)
-{
-	// Promotes the enum type into a uint type
-	unsigned int index = (unsigned int)ARGeExitCond;
-
-	return IsLevelIndexOOB(index);
-}
-void ANNGameMode::TryExitGameMode(ENNExitCond ARGeExitCond)
+void ANNGameMode::TryExitGameMode(unsigned int ARGexitCondIndex)
 {
 	// Retrieves what we're checking
-	TMap<FString, bool> mapCurChecked = _ExitConds[(int) ARGeExitCond];
+	TMap<FString, bool> mapCurChecked = _ExitConds[ARGexitCondIndex];
 	TArray<FString> arrKeysOfCurChecked;
 	mapCurChecked.GetKeys(arrKeysOfCurChecked);
 
@@ -133,7 +119,7 @@ void ANNGameMode::TryExitGameMode(ENNExitCond ARGeExitCond)
 	}
 	if (bShouldCallExitGameMode)
 	{
-		UE_LOG(NN_GameMode, Log, TEXT("ExitCond map %d allowed an exit ! Calling ExitGameMode..."), (int)ARGeExitCond);
-		ExitGameMode();
+		UE_LOG(NN_GameMode, Log, TEXT("ExitCond map %d allowed an exit ! Calling ExitGameMode..."), ARGexitCondIndex);
+		ExitGameMode(_LevelsToLoadOnExit[ARGexitCondIndex]);
 	}
 }

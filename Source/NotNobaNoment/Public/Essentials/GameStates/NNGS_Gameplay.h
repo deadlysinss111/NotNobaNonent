@@ -3,15 +3,15 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GameFramework/GameStateBase.h"
+#include "Essentials/NNGameState.h"
 
 // Extra includes
 
-#include "NNGameState.generated.h"
+#include "NNGS_Gameplay.generated.h"
 
 
 /**
- *  Custom Game State (Generic)
+ *  Custom Game State (Gameplay)
  *
  *  This is meant to hold & manage :
  *   - Level state
@@ -20,20 +20,20 @@
  *   - ...
  */
 
-DECLARE_LOG_CATEGORY_EXTERN(NN_GameState, Log, All);
+DECLARE_LOG_CATEGORY_EXTERN(NNGS_Gameplay, Log, All);
 
 UCLASS()
-class NOTNOBANOMENT_API ANNGameState : public AGameStateBase
+class NOTNOBANOMENT_API ANNGS_Gameplay : public ANNGameState
 {
 	GENERATED_BODY()
-
+	
 	/*  -----------    */
    /*  CLASS METHODS  */
   /*    -----------  */
 public:
 	// Constru & Destru
-	ANNGameState();
-	~ANNGameState();
+	ANNGS_Gameplay();
+	~ANNGS_Gameplay();
 
 	// BeginPlay override
 	virtual void BeginPlay() override;
