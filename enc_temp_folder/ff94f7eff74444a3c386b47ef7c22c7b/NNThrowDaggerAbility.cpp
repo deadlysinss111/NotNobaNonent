@@ -27,11 +27,11 @@ void UNNThrowDaggerAbility::Init(APawn* owner) {
     _material = Cast<UMaterialInterface>(StaticLoadObject(UMaterialInterface::StaticClass(), this, *AssetPath));
 
 
-    _spline = NewObject<USplineComponent>(_owner);
+    /*_spline = NewObject<USplineComponent>(_owner);
     _spline->RegisterComponent();
     _spline->AttachToComponent(_owner->GetRootComponent(), FAttachmentTransformRules::KeepRelativeTransform);
 
-    _splineMeshes.Reserve(500);
+    _splineMeshes.Reserve(500);*/
 }
 
 void UNNThrowDaggerAbility::Trigger() {
@@ -61,15 +61,12 @@ void UNNThrowDaggerAbility::Jump() {
 }
 
 void UNNThrowDaggerAbility::ResetCurve() {
-    for(USplineMeshComponent* mesh : _splineMeshes) {
-        mesh->ConditionalBeginDestroy();
-    }
     _splineMeshes.Reset(500);
     _spline->ClearSplinePoints();
 }
 
 void UNNThrowDaggerAbility::RenderCurve() {
-    ResetCurve();
+    /*ResetCurve();
 
     FVector direction;
     {
@@ -97,9 +94,8 @@ void UNNThrowDaggerAbility::RenderCurve() {
     int NumPoints = _spline->GetNumberOfSplinePoints();
     for (int i = 0; i < NumPoints - 1; i++) {
         USplineMeshComponent* SplineMesh = NewObject<USplineMeshComponent>(_owner);
-        _splineMeshes.Add(SplineMesh);
         SplineMesh->RegisterComponent();
-        //SplineMesh->AttachToComponent(_spline, FAttachmentTransformRules::KeepRelativeTransform);
+        SplineMesh->AttachToComponent(_spline, FAttachmentTransformRules::KeepRelativeTransform);
         SplineMesh->SetMobility(EComponentMobility::Movable);
         SplineMesh->SetStaticMesh(_mesh);
         if (_material) {
@@ -112,5 +108,5 @@ void UNNThrowDaggerAbility::RenderCurve() {
         FVector EndTangent = _spline->GetTangentAtSplinePoint(i + 1, ESplineCoordinateSpace::World);
 
         SplineMesh->SetStartAndEnd(StartPos, StartTangent, EndPos, EndTangent);
-    }
+    }*/
 }
