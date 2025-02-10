@@ -50,14 +50,16 @@ void UNNThrowDaggerAbility::Jump() {
 }
 
 void UNNThrowDaggerAbility::RenderCurve() {
+    // Create and register the spline component
     USplineComponent* Spline = NewObject<USplineComponent>(_owner);
     Spline->RegisterComponent();
     Spline->AttachToComponent(_owner->GetRootComponent(), FAttachmentTransformRules::KeepRelativeTransform);
-    Spline->ClearSplinePoints();
+    Spline->ClearSplinePoints(); // Clear old points
 
     FVector direction;
 
     {
+        // Raycast
         FHitResult HitResult;
         FVector start = _owner->GetActorLocation();
         FVector ForwardVector = _owner->GetActorForwardVector();
@@ -71,40 +73,43 @@ void UNNThrowDaggerAbility::RenderCurve() {
         direction = TrajectoryToolbox::BellCurveInitialVelocity(start, end, 1, 1000);
     }
 
+    // Generate trajectory points
     TArray<FVector> points = TrajectoryToolbox::LineRenderWithDirection(_owner->GetNavAgentLocation(), direction, _owner);
 
+    // Add points to the spline
     for (const FVector& point : points) {
         Spline->AddSplinePoint(point, ESplineCoordinateSpace::World);
     }
 
-    FString AssetPath = FString::Printf(TEXT("StaticMesh'/Game/StarterContent/Shapes/Shape_Cube.Shape_Cube'"));
+    /*FString AssetPath = FString::Printf(TEXT("StaticMesh'/Game/StarterContent/Shapes/Shape_Cube'"));
     _mesh = Cast<UStaticMesh>(StaticLoadObject(UStaticMesh::StaticClass(), this, *AssetPath));
 
-    AssetPath = FString::Printf(TEXT("Material'/Game/StarterContent/Materials/M_AssetPlatform.M_AssetPlatform'"));
+    AssetPath = FString::Printf(TEXT("Material'/Game/StarterContent/Materials/M_AssetPlatform'"));
     _material = Cast<UMaterialInterface>(StaticLoadObject(UMaterialInterface::StaticClass(), this, *AssetPath));
 
-    GenerateSplineMesh(Spline, _mesh, _material);
+    GenerateSplineMesh(Spline, _mesh, _material);*/
 }
 
 void UNNThrowDaggerAbility::GenerateSplineMesh(USplineComponent* Spline, UStaticMesh* Mesh, UMaterialInterface* Material) {
-    if (!Spline || !Mesh) return;
+    //if (!Spline || !Mesh) return;
 
-    int NumPoints = Spline->GetNumberOfSplinePoints();
-    for (int i = 0; i < NumPoints - 1; i++) {
-        USplineMeshComponent* SplineMesh = NewObject<USplineMeshComponent>(_owner);
-        SplineMesh->RegisterComponent();
-        SplineMesh->AttachToComponent(Spline, FAttachmentTransformRules::KeepRelativeTransform);
-        SplineMesh->SetMobility(EComponentMobility::Movable);
-        SplineMesh->SetStaticMesh(Mesh);
-        if (Material) {
-            SplineMesh->SetMaterial(0, Material);
-        }
+    //int NumPoints = Spline->GetNumberOfSplinePoints();
+    //for (int i = 0; i < NumPoints - 1; i++) {
+    //    USplineMeshComponent* SplineMesh = NewObject<USplineMeshComponent>(_owner);
+    //    SplineMesh->RegisterComponent();
+    //    SplineMesh->AttachToComponent(Spline, FAttachmentTransformRules::KeepRelativeTransform);
+    //    SplineMesh->SetMobility(EComponentMobility::Movable);
+    //    SplineMesh->SetStaticMesh(Mesh);
+    //    if (Material) {
+    //        SplineMesh->SetMaterial(0, Material);
+    //    }
 
-        FVector StartPos = Spline->GetLocationAtSplinePoint(i, ESplineCoordinateSpace::World);
-        FVector StartTangent = Spline->GetTangentAtSplinePoint(i, ESplineCoordinateSpace::World);
-        FVector EndPos = Spline->GetLocationAtSplinePoint(i + 1, ESplineCoordinateSpace::World);
-        FVector EndTangent = Spline->GetTangentAtSplinePoint(i + 1, ESplineCoordinateSpace::World);
+    //    // Set start and end positions with tangents
+    //    FVector StartPos = Spline->GetLocationAtSplinePoint(i, ESplineCoordinateSpace::World);
+    //    FVector StartTangent = Spline->GetTangentAtSplinePoint(i, ESplineCoordinateSpace::World);
+    //    FVector EndPos = Spline->GetLocationAtSplinePoint(i + 1, ESplineCoordinateSpace::World);
+    //    FVector EndTangent = Spline->GetTangentAtSplinePoint(i + 1, ESplineCoordinateSpace::World);
 
-        SplineMesh->SetStartAndEnd(StartPos, StartTangent, EndPos, EndTangent);
-    }
+    //    SplineMesh->SetStartAndEnd(StartPos, StartTangent, EndPos, EndTangent);
+    //}
 }

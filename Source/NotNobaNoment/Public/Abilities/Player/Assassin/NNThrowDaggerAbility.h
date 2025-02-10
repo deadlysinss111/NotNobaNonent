@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "Abilities/NNAbility.h"
 #include "NNDagger.h"
+#include "Components/SplineComponent.h"
 #include "NNThrowDaggerAbility.generated.h"
 
 DECLARE_DYNAMIC_DELEGATE(FActionToTrigger);
@@ -31,5 +32,13 @@ public:
 	void Throw();
 	UFUNCTION()
 	void Jump();
+	UFUNCTION()
+	void RenderCurve();
+	void GenerateSplineMesh(USplineComponent* Spline, UStaticMesh* Mesh, UMaterialInterface* Material);
 
+private:
+	UPROPERTY()
+	UStaticMesh* _mesh;
+	UPROPERTY()
+	UMaterialInterface* _material;
 };

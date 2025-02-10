@@ -6,7 +6,7 @@
 #include "Components/ActorComponent.h"
 #include "NNTriggerComponent.generated.h"
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnActorHit, AActor*, OverlappingActor);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnActorOverlap, AActor*, OverlappingActor);
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class NOTNOBANOMENT_API UNNTriggerComponent : public UActorComponent
@@ -27,10 +27,10 @@ public:
 
 
 	UPROPERTY(BlueprintAssignable, Category = "MyGenerique/Collision")
-	FOnActorHit OnActorEnter;
+	FOnActorOverlap OnActorEnter;
 
 	UPROPERTY(BlueprintAssignable, Category = "MyGenerique/Collision")
-	FOnActorHit OnActorExit;
+	FOnActorOverlap OnActorExit;
 
 
 	//Chanage the collision component
