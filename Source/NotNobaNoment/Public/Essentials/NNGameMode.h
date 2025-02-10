@@ -10,14 +10,14 @@
 #include "GameFramework/HUD.h"		// Makes HUD handling possible, which is useful immidiately (constructor). Not included above, for some reason.
 #include "NNGameInstance.h"			// To load levels and use the ELevelName enum.
 /* GameMode's GameStates and HUD includes */
-#include "NNGameStatePlaying.h"
+#include "NNGameState.h"
 #include "NNHUD.h"
 
 #include "NNGameMode.generated.h"
 
 
 
-// Abstraction for easier exit conditions index access.
+// Abstraction for easier exit conditions index access. Generic.
 UENUM()
 enum class ENNExitCond
 {
@@ -47,11 +47,11 @@ class NOTNOBANOMENT_API ANNGameMode : public AGameModeBase
 	/*  ----------    */
    /*  CLASS FIELDS  */
   /*    ----------  */
-	// TODO: Decide on UPROPERTIES
 public:
 	ENNLevel _ELevelOnExit;
-private:
-	TArray<TMap<FString, bool>> _ExitConds;		// Private so the setter can have extra logic
+
+protected:
+	TArray<TMap<FString, bool>> _ExitConds;		// Private from other classes so the setter can have extra logic
 	
 
 
@@ -63,17 +63,19 @@ public:
 	ANNGameMode();
 	~ANNGameMode();
 
-protected:
-	// Enter behaviour of the Game Mode
-	virtual void BeginPlay() override;
-
-	/* _ExitConds getter& setter */
-	
+	/* _ExitConds getter & setter */
 	const TArray<TMap<FString, bool>>& GetExitConds();
 	const TOptional<TMap<FString, bool>> GetExitCondsMap(ENNExitCond ARGeExitCond);
 	void SetExitCondsMap(ENNExitCond ARGeExitCond, const TMap<FString, bool>& ARGnewExitCondMap);
+	void SetOneExitCond(ENNExitCond ARGeExitCond, FString ARGcondString, bool ARGbool);
 
-private:
+	// Try to exit the GameMode given a certain condition map. Called internally when a boolean changes, but also callable by other classes to implement in events.
+	void TryExitGameMode(ENNExitCond ARGeExitCond);
+
+
+protected:
+	// Enter and Exit behaviours of the Game Mode
+	virtual void BeginPlay() override;
 	// Exit behaviour of the Game Mode
 	virtual void ExitGameMode();
 

@@ -1,16 +1,16 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "Essentials/NNGameStatePlaying.h"
+#include "Essentials/NNGameState.h"
 
-DEFINE_LOG_CATEGORY(NN_GameStatePlaying);
+DEFINE_LOG_CATEGORY(NN_GameState);
 
 	/*  -----------    */
    /*  CLASS METHODS  */
   /*    -----------  */
 
 // Constru & Destru
-ANNGameStatePlaying::ANNGameStatePlaying()
+ANNGameState::ANNGameState()
 {
 	UWorld* world = GetWorld();
 
@@ -20,9 +20,9 @@ ANNGameStatePlaying::ANNGameStatePlaying()
 		GameModeClass = AuthorityGameMode ? AuthorityGameMode->GetClass() : nullptr;
 	}
 
-	UE_LOG(NN_GameStatePlaying, Log, TEXT("Instantiated GameStatePlaying ! :D"));
+	UE_LOG(NN_GameState, Log, TEXT("Instantiated GameState ! :D"));
 }
-ANNGameStatePlaying::~ANNGameStatePlaying()
+ANNGameState::~ANNGameState()
 {
 	// Nothing yet
 }

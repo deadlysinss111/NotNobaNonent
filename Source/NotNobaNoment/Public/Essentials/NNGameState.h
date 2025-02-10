@@ -7,11 +7,14 @@
 
 // Extra includes
 
-#include "NNGameStatePlaying.generated.h"
+#include "NNGameState.generated.h"
+
+// Forward declares
+//class ANNGameMode;
 
 /**
- *  Custom Game State (Currently Playing through a level)
- * 
+ *  Custom Game State (Generic)
+ *
  *  This is meant to hold & manage :
  *   - Level state
  *   - Level accesses
@@ -19,10 +22,10 @@
  *   - ...
  */
 
-DECLARE_LOG_CATEGORY_EXTERN(NN_GameStatePlaying, Log, All);
+DECLARE_LOG_CATEGORY_EXTERN(NN_GameState, Log, All);
 
 UCLASS()
-class NOTNOBANOMENT_API ANNGameStatePlaying : public AGameStateBase
+class NOTNOBANOMENT_API ANNGameState : public AGameStateBase
 {
 	GENERATED_BODY()
 
@@ -31,6 +34,6 @@ class NOTNOBANOMENT_API ANNGameStatePlaying : public AGameStateBase
   /*    -----------  */
 public:
 	// Constru & Destru
-	ANNGameStatePlaying();
-	~ANNGameStatePlaying();
+	ANNGameState();
+	~ANNGameState();
 };

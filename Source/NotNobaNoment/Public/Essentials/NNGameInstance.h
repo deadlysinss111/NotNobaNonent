@@ -43,7 +43,6 @@ class NOTNOBANOMENT_API UNNGameInstance : public UGameInstance
 	/*  ----------    */
    /*  CLASS FIELDS  */
   /*    ----------  */
-	// TODO: Decide on UPROPERTIES
 	TArray<FName> _arrLevels;
 	
 
