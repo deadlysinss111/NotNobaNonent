@@ -30,7 +30,7 @@ public:
 
 public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
-	UNNTriggerComponent* TriggerComponent;
+	UNNCollisionComponent* TriggerComponent;
 
 public:
 	DaggerState _currentState;
@@ -48,11 +48,18 @@ public:
 	virtual void OnActorEnter(AActor* OtherActor) override;
 	UFUNCTION()
 	virtual void OnActorExit(AActor* OtherActor) override {};
+	UFUNCTION()
+	virtual void OnActorHit(AActor* OtherActor, const FHitResult& Hit) override;
 
 	UFUNCTION()
 	virtual void OnHealthChanged(float CurrentHealth) override {};
 	UFUNCTION()
 	virtual void OnDeath() override {};
+
+	UFUNCTION()
+	inline UNNCollisionComponent* GetCollisionComponent() const override { return TriggerComponent; };
+	UFUNCTION()
+	inline UNNHealthComponent* GetHealthComponent() const override { return nullptr; };
 
 
 public:

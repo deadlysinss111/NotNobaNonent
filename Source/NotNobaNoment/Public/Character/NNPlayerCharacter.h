@@ -35,13 +35,13 @@ public:
 	UNNAbilitySetDataAsset* _abilitySet;
 
 	UPROPERTY()
-	UNNAbility* _attack;
-
-	UPROPERTY()
 	UNNAbility* _ability_1;
 
 	UPROPERTY()
 	UNNAbility* _ability_2;
+
+	UPROPERTY()
+	UNNAbility* _ability_3;
 
 	//Input System
 protected:
@@ -85,9 +85,9 @@ protected:
 	void MoveRight(const FInputActionValue& InputValue);
 	void HandlePlayerDash();
 	void HandlePlayerLook(const FInputActionValue& InputValue);
-	virtual void HandlePlayerAbility1(const FInputActionValue& InputValue);
-	virtual void HandlePlayerAbility2(const FInputActionValue& InputValue);
-	virtual void HandlePlayerAbility3(const FInputActionValue& InputValue);
+	void HandlePlayerAbility1(const FInputActionValue& InputValue);
+	void HandlePlayerAbility2(const FInputActionValue& InputValue);
+	void HandlePlayerAbility3(const FInputActionValue& InputValue);
 
 private:
 	FTimerHandle DashTimerHandle;

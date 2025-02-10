@@ -17,12 +17,12 @@ class NOTNOBANOMENT_API UNNAbilitySetDataAsset : public UDataAsset
 
 public:
 	UPROPERTY(EditAnywhere)
-	TSubclassOf<UNNAbility> _attack;
-
-	UPROPERTY(EditAnywhere)
 	TSubclassOf<UNNAbility> _ability_1;
 
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<UNNAbility> _ability_2;
+
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<UNNAbility> _ability_3;
 	
 };

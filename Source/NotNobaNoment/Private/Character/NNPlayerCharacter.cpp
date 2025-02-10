@@ -31,8 +31,15 @@ void ANNPlayerCharacter::BeginPlay()
     Super::BeginPlay();
 
     if (_abilitySet != NULL) {
-        _attack = NewObject<UNNAbility>(this, _abilitySet->_attack);
-        _attack->Init(this);
+        
+        _ability_1 = NewObject<UNNAbility>(this, _abilitySet->_ability_1);
+        _ability_1->Init(this);
+
+        _ability_2 = NewObject<UNNAbility>(this, _abilitySet->_ability_2);
+        _ability_2->Init(this);
+
+        _ability_3 = NewObject<UNNAbility>(this, _abilitySet->_ability_3);
+        _ability_3->Init(this);
     }
     else
         GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, TEXT("the ability set is null"));
@@ -141,7 +148,7 @@ void ANNPlayerCharacter::HandlePlayerLook(const FInputActionValue& InputValue)
  */
 void ANNPlayerCharacter::HandlePlayerAbility1(const FInputActionValue& InputValue)
 {
-    UE_LOG(LogTemp, Warning, TEXT("Ability 1"));
+    _ability_1->Trigger();
 }
 
 /**
@@ -150,7 +157,7 @@ void ANNPlayerCharacter::HandlePlayerAbility1(const FInputActionValue& InputValu
  */
 void ANNPlayerCharacter::HandlePlayerAbility2(const FInputActionValue& InputValue)
 {
-    UE_LOG(LogTemp, Warning, TEXT("Ability 2"));
+    _ability_2->Trigger();
 }
 
 /**
@@ -159,25 +166,11 @@ void ANNPlayerCharacter::HandlePlayerAbility2(const FInputActionValue& InputValu
  */
 void ANNPlayerCharacter::HandlePlayerAbility3(const FInputActionValue& InputValue)
 {
-    UE_LOG(LogTemp, Warning, TEXT("Ability 3"));
+    _ability_3->Trigger();
 }
 
-/**
- * Resets the character's max walk speed to its default value.
- */
+
 void ANNPlayerCharacter::ResetDash()
 {
     GetCharacterMovement()->MaxWalkSpeed = 600.f;
-}
-
-void ANNPlayerCharacter::TriggerAttack() {
-    _attack->Trigger();
-}
-
-void ANNPlayerCharacter::TriggerAbility_1() {
-    _ability_1->Trigger();
-}
-
-void ANNPlayerCharacter::TriggerAbility_2() {
-    _ability_2->Trigger();
 }

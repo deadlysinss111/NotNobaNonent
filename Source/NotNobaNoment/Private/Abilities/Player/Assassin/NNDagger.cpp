@@ -8,9 +8,9 @@ ANNDagger::ANNDagger()
 {
 	PrimaryActorTick.bCanEverTick = true;
 
-	TriggerComponent = CreateDefaultSubobject<UNNTriggerComponent>(TEXT("TriggerComponent"));
+	TriggerComponent = CreateDefaultSubobject<UNNCollisionComponent>(TEXT("TriggerComponent"));
 
-	InitSmth<ANNDagger>(this);
+	InitEventComponent<ANNDagger>(this);
 
 	_currentStateAction.BindUFunction(this, FName("HandedOverlapAction"));
 
@@ -33,6 +33,13 @@ void ANNDagger::OnActorEnter(AActor* OtherActor)
 	if (_currentStateAction.IsBound()) {
 		_currentStateAction.Execute(OtherActor);
 	}
+}
+
+void ANNDagger::OnActorHit(AActor* OtherActor, const FHitResult& Hit)
+{
+	/*if (_currentStateAction.IsBound()) {
+		_currentStateAction.Execute(OtherActor);
+	}*/
 }
 
 void ANNDagger::ChangeState(DaggerState newState)
