@@ -7,8 +7,9 @@
 
 #include "Interface/NNEntityInterface.h"
 #include "Component/NNHealthComponent.h"
-#include "Component/NNTriggerComponent.h"
+#include "Component/NNCollisionComponent.h"
 #include "Abilities/NNAbility.h"
+#include <InputAction.h>
 
 #include "NNEntityCharacter.generated.h"
 
@@ -28,7 +29,7 @@ protected:
 
 	// Components
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
-	UNNTriggerComponent* TriggerComponent;
+	UNNCollisionComponent* CollisionComponent;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
 	UNNHealthComponent* HealthComponent;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
@@ -38,23 +39,21 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
+
 	// INNEntityInterface
-	UFUNCTION()
-	virtual void OnActorEnter(AActor* OtherActor) override;
-	UFUNCTION()
-	virtual void OnActorExit(AActor* OtherActor) override;
+
+	virtual UNNCollisionComponent* GetCollisionComponent() const override { return CollisionComponent; };
+	virtual UNNHealthComponent* GetHealthComponent() const override { return HealthComponent; };
 
 	UFUNCTION()
-	virtual void OnHealthChanged(float CurrentHealth) override;
+	virtual void OnActorEnter(AActor* OtherActor) override {};
 	UFUNCTION()
-	virtual void OnDeath() override;
+	virtual void OnActorExit(AActor* OtherActor) override {};
+	UFUNCTION()
+	virtual void OnActorHit(AActor* OtherActor, const FHitResult& Hit) override {};
 
-
-	// Functions 
-protected:
-	// Movement
 	UFUNCTION()
-	void Move();
+	virtual void OnHealthChanged(float CurrentHealth) override {};
 	UFUNCTION()
-	void Look();
+	virtual void OnDeath() override {};
 };

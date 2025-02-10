@@ -49,27 +49,48 @@ protected:
 	class UInputMappingContext* InputMappingComponent;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Entity")
-	class UInputAction* MoveAction;
+	class UInputAction* ForwardAction;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Entity")
-	class UInputAction* JumpAction;
+	class UInputAction* RightAction;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Entity")
+	class UInputAction* DashAction;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Entity")
 	class UInputAction* LookAction;
 
+	//Competences
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Entity")
-	class UInputAction* AttackAction;
+	class UInputAction* Ability1Action;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Entity")
+	class UInputAction* Ability2Action;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Entity")
+	class UInputAction* Ability3Action;
+
+	//Camera
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Entity")
 	class UCameraComponent* Camera;
 
+	//CameraBoom
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
+	class USpringArmComponent* CameraBoom;
+
+
+protected:
+	void HandlePlayerInputMove(const FInputActionValue& InputValue);
+	void MoveForward(const FInputActionValue& InputValue);
+	void MoveRight(const FInputActionValue& InputValue);
+	void HandlePlayerDash();
+	void HandlePlayerLook(const FInputActionValue& InputValue);
+	virtual void HandlePlayerAbility1(const FInputActionValue& InputValue);
+	virtual void HandlePlayerAbility2(const FInputActionValue& InputValue);
+	virtual void HandlePlayerAbility3(const FInputActionValue& InputValue);
+
 private:
-	UFUNCTION()
-	void TriggerAttack();
+	FTimerHandle DashTimerHandle;
+	void ResetDash();
 
-	UFUNCTION()
-	void TriggerAbility_1();
-
-	UFUNCTION()
-	void TriggerAbility_2();
 };
