@@ -5,15 +5,22 @@
 #include "CoreMinimal.h"
 #include "UObject/NoExportTypes.h"
 //#include "GameFramework/Pawn.h"
+#include "InputActionValue.h"
 #include "NNAbility.generated.h"
 
-/**
- * 
- */
+UENUM()
+enum class KeyState {
+	Start = 0,
+	Hold,
+	End,
+};
+
+
 UCLASS()
 class NOTNOBANOMENT_API UNNAbility : public UObject
 {
 	GENERATED_BODY()
+
 
 protected:
 	UPROPERTY()
@@ -21,6 +28,6 @@ protected:
 
 public:
 	virtual void Init(APawn* owner);
-	virtual void Trigger() {};
+	virtual void Trigger(KeyState state) {};
 	
 };

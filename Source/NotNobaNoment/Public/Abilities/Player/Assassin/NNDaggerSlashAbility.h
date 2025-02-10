@@ -29,5 +29,5 @@ public:
 	void Init(APawn* owner) override;
 
 	UFUNCTION()
-	void Trigger() override;
+	void Trigger(KeyState state) override;
 };

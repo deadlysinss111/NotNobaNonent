@@ -62,7 +62,7 @@ void ANNPlayerCharacter::Tick(float DeltaTime)
     UGameplayStatics::GetPlayerController(GetWorld(), 0)->DeprojectMousePositionToWorld()
     UE_LOG(LogTemp, Warning, TEXT("Mouse Location: %f, %f"), mouseX, mouseY);*/
 
-   /* FHitResult Hit;
+    FHitResult Hit;
     bool bHitSuccessful = UGameplayStatics::GetPlayerController(GetWorld(), 0)->GetHitResultUnderCursor(ECollisionChannel::ECC_Visibility, true, Hit);
 
     FVector CachedDestination;
@@ -72,10 +72,14 @@ void ANNPlayerCharacter::Tick(float DeltaTime)
         CachedDestination = Hit.Location;
     }
 
-    FVector WorldDirection = (CachedDestination - ControlledPawn->GetActorLocation()).GetSafeNormal();
+    UE_LOG(LogTemp, Warning, TEXT("Mouse Location: %f, %f"), CachedDestination.X, CachedDestination.Y);
+
+    FVector worldDir = (CachedDestination - GetActorLocation()).GetSafeNormal();
+    FVector alteredDir = FVector(worldDir.X, worldDir.Y, 0);
+    alteredDir = alteredDir.RotateAngleAxis(-90.0f, FVector(0, 0, 1));
 
     
-    GetOwner->SetActorRotation(FRotationMatrix::MakeFromX(WorldDirection).Rotator());*/
+    GetMesh()->SetWorldRotation(FRotationMatrix::MakeFromX(alteredDir).Rotator());
 }
 
 /**
@@ -92,9 +96,15 @@ void ANNPlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputC
         Input->BindAction(RightAction, ETriggerEvent::Triggered, this, &ANNPlayerCharacter::MoveRight);
         Input->BindAction(LookAction, ETriggerEvent::Triggered, this, &ANNPlayerCharacter::HandlePlayerLook);
         Input->BindAction(DashAction, ETriggerEvent::Started, this, &ANNPlayerCharacter::HandlePlayerDash);
-        Input->BindAction(Ability1Action, ETriggerEvent::Triggered, this, &ANNPlayerCharacter::HandlePlayerAbility1);
-        Input->BindAction(Ability2Action, ETriggerEvent::Triggered, this, &ANNPlayerCharacter::HandlePlayerAbility2);
-        Input->BindAction(Ability3Action, ETriggerEvent::Triggered, this, &ANNPlayerCharacter::HandlePlayerAbility3);
+        Input->BindAction(Ability1Action, ETriggerEvent::Started, this, &ANNPlayerCharacter::StartPlayerAbility1);
+        Input->BindAction(Ability1Action, ETriggerEvent::Ongoing, this, &ANNPlayerCharacter::HoldPlayerAbility1);
+        Input->BindAction(Ability1Action, ETriggerEvent::Completed, this, &ANNPlayerCharacter::EndPlayerAbility1);
+        Input->BindAction(Ability2Action, ETriggerEvent::Started, this, &ANNPlayerCharacter::StartPlayerAbility2);
+        Input->BindAction(Ability2Action, ETriggerEvent::Ongoing, this, &ANNPlayerCharacter::HoldPlayerAbility2);
+        Input->BindAction(Ability2Action, ETriggerEvent::Completed, this, &ANNPlayerCharacter::EndPlayerAbility2);
+        Input->BindAction(Ability3Action, ETriggerEvent::Started, this, &ANNPlayerCharacter::StartPlayerAbility3);
+        Input->BindAction(Ability3Action, ETriggerEvent::Ongoing, this, &ANNPlayerCharacter::HoldPlayerAbility3);
+        Input->BindAction(Ability3Action, ETriggerEvent::Completed, this, &ANNPlayerCharacter::EndPlayerAbility3);
     }
 }
 
@@ -168,27 +178,57 @@ void ANNPlayerCharacter::HandlePlayerLook(const FInputActionValue& InputValue)
  * Handles the first player ability.
  * @param InputValue - The input value for the ability.
  */
-void ANNPlayerCharacter::HandlePlayerAbility1(const FInputActionValue& InputValue)
+void ANNPlayerCharacter::StartPlayerAbility1(const FInputActionValue& InputValue)
 {
-    _ability_1->Trigger();
+    _ability_1->Trigger(KeyState::Start);
+}
+
+void ANNPlayerCharacter::HoldPlayerAbility1(const FInputActionValue& InputValue)
+{
+    _ability_1->Trigger(KeyState::Hold);
+}
+
+void ANNPlayerCharacter::EndPlayerAbility1(const FInputActionValue& InputValue)
+{
+    _ability_1->Trigger(KeyState::End);
 }
 
 /**
  * Handles the second player ability.
  * @param InputValue - The input value for the ability.
  */
-void ANNPlayerCharacter::HandlePlayerAbility2(const FInputActionValue& InputValue)
+void ANNPlayerCharacter::StartPlayerAbility2(const FInputActionValue& InputValue)
 {
-    _ability_2->Trigger();
+    _ability_2->Trigger(KeyState::Start);
+}
+
+void ANNPlayerCharacter::HoldPlayerAbility2(const FInputActionValue& InputValue)
+{
+    _ability_2->Trigger(KeyState::Hold);
+}
+
+void ANNPlayerCharacter::EndPlayerAbility2(const FInputActionValue& InputValue)
+{
+    _ability_2->Trigger(KeyState::End);
 }
 
 /**
  * Handles the third player ability.
  * @param InputValue - The input value for the ability.
  */
-void ANNPlayerCharacter::HandlePlayerAbility3(const FInputActionValue& InputValue)
+void ANNPlayerCharacter::StartPlayerAbility3(const FInputActionValue& InputValue)
 {
-    _ability_3->Trigger();
+    _ability_3->Trigger(KeyState::Start);
+}
+
+void ANNPlayerCharacter::HoldPlayerAbility3(const FInputActionValue& InputValue)
+{
+    _ability_3->Trigger(KeyState::Hold);
+}
+
+void ANNPlayerCharacter::EndPlayerAbility3(const FInputActionValue& InputValue)
+{
+    _ability_3->Trigger(KeyState::End);
 }
 
 
