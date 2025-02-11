@@ -43,9 +43,9 @@ void UNNThrowDaggerAbility::Throw(KeyState state) {
 
 	if (UPrimitiveComponent* PhysComp = Cast<UPrimitiveComponent>(_dagger->GetRootComponent()))
 	{
+		
 		PhysComp->SetSimulatePhysics(true);
-		FVector ForwardDirection = _owner->FindComponentByClass<USkeletalMeshComponent>()->GetComponentRotation().Vector() * 1.0f;
-        ForwardDirection = ForwardDirection.RotateAngleAxis(90.0f, FVector(0, 0, 1));
+		FVector ForwardDirection = _owner->GetActorForwardVector();
 		FVector Force = ForwardDirection * 100000;
 		PhysComp->AddImpulse(Force);
 	}

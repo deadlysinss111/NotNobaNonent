@@ -9,7 +9,7 @@
 #include "Components/SplineMeshComponent.h"
 #include "NNThrowDaggerAbility.generated.h"
 
-DECLARE_DYNAMIC_DELEGATE(FActionToTrigger);
+DECLARE_DYNAMIC_DELEGATE_OneParam(FActionToTrigger, KeyState, state);
 
 #define SPLINE_SIZE		(80)
 
@@ -32,13 +32,13 @@ public:
 	void Trigger(KeyState state) override;
 
 	UFUNCTION()
-	void Throw();
+	void Throw(KeyState state);
 	UFUNCTION()
-	void Jump();
+	void Jump(KeyState state);
 	UFUNCTION()
+	void RenderCurve(KeyState state);
+
 	void ResetCurve();
-	UFUNCTION()
-	void RenderCurve();
 
 private:
 	UPROPERTY()

@@ -121,7 +121,7 @@ void ANNDagger::PickupAttack(ANNPlayerCharacter* OtherActor) {
 	auto var = UNiagaraFunctionLibrary::SpawnSystemAtLocation(
 		OtherActor,
 		_pickupAttackFX,
-		GetActorLocation() + FVector(0, 0, 1),
+		OtherActor->GetActorLocation() + FVector(0, 0, 1),
 		OtherActor->GetActorRotation(),
 		FVector(1.0f), // Scale
 		true,          // Auto Destroy
