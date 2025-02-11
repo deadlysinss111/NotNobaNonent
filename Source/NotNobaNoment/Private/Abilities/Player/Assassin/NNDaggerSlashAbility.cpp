@@ -37,9 +37,9 @@ void UNNDaggerSlashAbility::Init(APawn* owner) {
 }
 
 
-void UNNDaggerSlashAbility::Trigger() {
+void UNNDaggerSlashAbility::Trigger(KeyState state) {
 	//_owner->GetComponentByClass< UNiagaraSystem>();
-	
+
 	_dagger->Slash();
 
 	_owner->GetComponentByClass<USkeletalMeshComponent>()->GetAnimInstance()->RequestTransitionEvent(TEXT("Attack"), .1f, (ETransitionRequestQueueMode)0, (ETransitionRequestOverwriteMode)0);

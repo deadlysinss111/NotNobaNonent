@@ -11,6 +11,8 @@
 
 DECLARE_DYNAMIC_DELEGATE(FActionToTrigger);
 
+#define SPLINE_SIZE		(80)
+
 /**
  * 
  */
@@ -27,7 +29,7 @@ private:
 	
 public:
 	void Init(APawn* owner) override;
-	void Trigger() override;
+	void Trigger(KeyState state) override;
 
 	UFUNCTION()
 	void Throw();

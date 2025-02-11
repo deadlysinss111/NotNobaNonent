@@ -31,10 +31,10 @@ void UNNThrowDaggerAbility::Init(APawn* owner) {
     _spline->RegisterComponent();
     _spline->AttachToComponent(_owner->GetRootComponent(), FAttachmentTransformRules::KeepRelativeTransform);
 
-    _splineMeshes.Reserve(500);
+    _splineMeshes.Reserve(SPLINE_SIZE);
 }
 
-void UNNThrowDaggerAbility::Trigger() {
+void UNNThrowDaggerAbility::Trigger(KeyState state) {
 	_currentAction.Execute();
 }
 
@@ -64,7 +64,7 @@ void UNNThrowDaggerAbility::ResetCurve() {
     for(USplineMeshComponent* mesh : _splineMeshes) {
         mesh->ConditionalBeginDestroy();
     }
-    _splineMeshes.Reset(500);
+    _splineMeshes.Reset(SPLINE_SIZE);
     _spline->ClearSplinePoints();
 }
 
@@ -75,18 +75,19 @@ void UNNThrowDaggerAbility::RenderCurve() {
     {
         FHitResult HitResult;
         FVector start = _owner->GetActorLocation();
-        FVector ForwardVector = _owner->GetActorForwardVector();
-        FVector end = start + (ForwardVector * 10.0f);
+        FVector end = (_owner->FindComponentByClass<USkeletalMeshComponent>()->GetComponentRotation().Vector() * 1.0f);
+        end = end.RotateAngleAxis(90.0f, FVector(0, 0, 1));
+        end += start;
 
         FCollisionQueryParams QueryParams;
         QueryParams.AddIgnoredActor(_owner);
 
         bool bHit = GetWorld()->LineTraceSingleByChannel(HitResult, start, end, ECC_Visibility, QueryParams);
 
-        direction = TrajectoryToolbox::BellCurveInitialVelocity(start, end, 1, 1000);
+        direction = TrajectoryToolbox::BellCurveInitialVelocity(start, end, .05f, 1000);
     }
 
-    TArray<FVector> points = TrajectoryToolbox::LineRenderWithDirection(_owner->GetNavAgentLocation(), direction, _owner);
+    TArray<FVector> points = TrajectoryToolbox::LineRenderWithDirection(_owner->GetNavAgentLocation(), direction, _owner, SPLINE_SIZE);
 
     for (const FVector& point : points) {
         _spline->AddSplinePoint(point, ESplineCoordinateSpace::World);

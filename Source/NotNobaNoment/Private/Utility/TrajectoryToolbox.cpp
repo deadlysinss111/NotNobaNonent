@@ -36,19 +36,18 @@ FVector TrajectoryToolbox::BellCurveInitialVelocity(FVector startPoint, FVector 
 }
 
 
-TArray<FVector> TrajectoryToolbox::LineRenderWithDirection(FVector origin, FVector direction, AActor* actorToIgnore)
+TArray<FVector> TrajectoryToolbox::LineRenderWithDirection(FVector origin, FVector direction, AActor* actorToIgnore, int splineSize, float step)
 {
     TArray<FVector> pathPoints;
 
     // We initialize base values
-    float step = .1f;
     FVector virtualPos = origin;
     FVector nextPos;
     float overlap;
     FHitResult hit;
 
     // This loop will calculate next position, check if we hit something and add point to draw in prediction each iteration 
-    for (int i = 1; i < 500; i++)
+    for (int i = 1; i < splineSize; i++)
     {
         nextPos = virtualPos + direction * step;
         direction += FVector(0, 0, step * -1);
