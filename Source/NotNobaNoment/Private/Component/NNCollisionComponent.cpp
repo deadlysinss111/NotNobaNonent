@@ -5,7 +5,7 @@
 
 UNNCollisionComponent::UNNCollisionComponent()
 {
-    UE_LOG(LogTemp, Warning, TEXT("UNNCollisionComponent - Début du constructeur"));
+   // UE_LOG(LogTemp, Warning, TEXT("UNNCollisionComponent - Début du constructeur"));
     // Création d'un composant de collision par défaut
     CollisionComponent = CreateDefaultSubobject<UBoxComponent>(TEXT("CollisionComponent"));
 
@@ -16,7 +16,7 @@ UNNCollisionComponent::UNNCollisionComponent()
     }
 
 
-    UE_LOG(LogTemp, Warning, TEXT("UNNCollisionComponent - CollisionComponent créé : %s"), *CollisionComponent->GetName());
+    //UE_LOG(LogTemp, Warning, TEXT("UNNCollisionComponent - CollisionComponent créé : %s"), *CollisionComponent->GetName());
 
     // Configuration des collisions
     CollisionComponent->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
@@ -29,7 +29,7 @@ UNNCollisionComponent::UNNCollisionComponent()
     CollisionComponent->OnComponentEndOverlap.AddDynamic(this, &UNNCollisionComponent::HandleEndOverlap);
     CollisionComponent->OnComponentHit.AddDynamic(this, &UNNCollisionComponent::HandleHit);
 
-    UE_LOG(LogTemp, Warning, TEXT("UNNCollisionComponent - Fin du constructeur"));
+    //UE_LOG(LogTemp, Warning, TEXT("UNNCollisionComponent - Fin du constructeur"));
 
 }
 
@@ -44,11 +44,11 @@ void UNNCollisionComponent::BeginPlay()
         return;
     }
 
-    UE_LOG(LogTemp, Warning, TEXT("BeginPlay called for UNNCollisionComponent"));
+   // UE_LOG(LogTemp, Warning, TEXT("BeginPlay called for UNNCollisionComponent"));
 
     if (UPrimitiveComponent* RootCollision = Cast<UPrimitiveComponent>(OwnerActor->GetRootComponent()))
     {
-        UE_LOG(LogTemp, Warning, TEXT("Using RootComponent as collision component: %s"), *RootCollision->GetName());
+       // UE_LOG(LogTemp, Warning, TEXT("Using RootComponent as collision component: %s"), *RootCollision->GetName());
         SetCollisionComponent(RootCollision);
         return;
     }
@@ -62,13 +62,13 @@ void UNNCollisionComponent::BeginPlay()
     {
         if (Comp && Comp != OwnerActor->GetRootComponent())
         {
-            UE_LOG(LogTemp, Warning, TEXT("Found a suitable collision component: %s"), *Comp->GetName());
+           // UE_LOG(LogTemp, Warning, TEXT("Found a suitable collision component: %s"), *Comp->GetName());
             SetCollisionComponent(Comp);
             return;
         }
     }
 
-    UE_LOG(LogTemp, Error, TEXT("The owner does not have a valid collision component"));
+    //UE_LOG(LogTemp, Error, TEXT("The owner does not have a valid collision component"));
 }
 
 void UNNCollisionComponent::SetCollisionComponent(UPrimitiveComponent* NewCollisionComponent)
@@ -94,20 +94,25 @@ void UNNCollisionComponent::SetCollisionComponent(UPrimitiveComponent* NewCollis
 
     CollisionComponent = NewCollisionComponent;
 
-    UE_LOG(LogTemp, Warning, TEXT("Setting up collision events for: %s"), *CollisionComponent->GetName());
+    //UE_LOG(LogTemp, Warning, TEXT("Setting up collision events for: %s"), *CollisionComponent->GetName());
 
 
     CollisionComponent->OnComponentBeginOverlap.AddDynamic(this, &UNNCollisionComponent::HandleBeginOverlap);
     CollisionComponent->OnComponentEndOverlap.AddDynamic(this, &UNNCollisionComponent::HandleEndOverlap);
     CollisionComponent->OnComponentHit.AddDynamic(this, &UNNCollisionComponent::HandleHit);
 
-    UE_LOG(LogTemp, Warning, TEXT("CollisionComponent successfully set to: %s"), *CollisionComponent->GetName());
+   // UE_LOG(LogTemp, Warning, TEXT("CollisionComponent successfully set to: %s"), *CollisionComponent->GetName());
 }
 
 void UNNCollisionComponent::HandleBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
+    //LOG
+	UE_LOG(LogTemp, Warning, TEXT("UNNCollisionComponent - HandleBeginOverlap called"));
+
     if (OtherActor && OtherActor != GetOwner())
     {
+		//LOG
+		UE_LOG(LogTemp, Warning, TEXT("UNNCollisionComponent - HandleBeginOverlap called with valid actor"));
         OnActorEnter.Broadcast(OtherActor);
     }
 }

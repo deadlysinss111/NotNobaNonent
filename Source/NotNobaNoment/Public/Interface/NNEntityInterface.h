@@ -31,11 +31,16 @@ public:
 
     // Events 
     //Inlined functions to be overriden by the class that implements the interface
+    UFUNCTION()
     virtual inline void OnActorEnter(AActor* OtherActor) {};
+    UFUNCTION()
     virtual inline void OnActorExit(AActor* OtherActor) {};
+    UFUNCTION()
     virtual inline void OnActorHit(AActor* OtherActor, const FHitResult& Hit) {};
 
+    UFUNCTION()
     virtual inline void OnHealthChanged(float CurrentHealth) {};
+    UFUNCTION()
     virtual inline void OnDeath() {};
 
 

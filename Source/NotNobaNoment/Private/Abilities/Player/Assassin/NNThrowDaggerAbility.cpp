@@ -35,17 +35,17 @@ void UNNThrowDaggerAbility::Init(APawn* owner) {
 }
 
 void UNNThrowDaggerAbility::Trigger(KeyState state) {
-	_currentAction.Execute();
+	_currentAction.Execute(state);
 }
 
-void UNNThrowDaggerAbility::Throw() {
+void UNNThrowDaggerAbility::Throw(KeyState state) {
 	_dagger->DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
 
 	if (UPrimitiveComponent* PhysComp = Cast<UPrimitiveComponent>(_dagger->GetRootComponent()))
 	{
-		
 		PhysComp->SetSimulatePhysics(true);
-		FVector ForwardDirection = _owner->GetActorForwardVector();
+		FVector ForwardDirection = _owner->FindComponentByClass<USkeletalMeshComponent>()->GetComponentRotation().Vector() * 1.0f;
+        ForwardDirection = ForwardDirection.RotateAngleAxis(90.0f, FVector(0, 0, 1));
 		FVector Force = ForwardDirection * 100000;
 		PhysComp->AddImpulse(Force);
 	}
@@ -54,10 +54,12 @@ void UNNThrowDaggerAbility::Throw() {
 	_currentAction.BindUFunction(this, FName("Jump"));
 }
 
-void UNNThrowDaggerAbility::Jump() {
+void UNNThrowDaggerAbility::Jump(KeyState state) {
+    if (state != KeyState::End) return;
 
-	_dagger->ChangeState(ANNDagger::DaggerState::Handed);
-	_currentAction.BindUFunction(this, FName("Throw"));
+    _owner->SetActorLocation(_dagger->GetActorLocation());
+	_currentAction.BindUFunction(this, FName("RenderCurve"));
+	_currentAction.BindUFunction(this, FName("RenderCurve"));
 }
 
 void UNNThrowDaggerAbility::ResetCurve() {
@@ -68,8 +70,14 @@ void UNNThrowDaggerAbility::ResetCurve() {
     _spline->ClearSplinePoints();
 }
 
-void UNNThrowDaggerAbility::RenderCurve() {
+void UNNThrowDaggerAbility::RenderCurve(KeyState state) {
     ResetCurve();
+
+    if (state == KeyState::End) {
+        _currentAction.BindUFunction(this, FName("Throw"));
+        Trigger(state);
+        return;
+    }
 
     FVector direction;
     {
@@ -91,9 +99,7 @@ void UNNThrowDaggerAbility::RenderCurve() {
 
     for (const FVector& point : points) {
         _spline->AddSplinePoint(point, ESplineCoordinateSpace::World);
-    }
-
-    
+    }    
 
     int NumPoints = _spline->GetNumberOfSplinePoints();
     for (int i = 0; i < NumPoints - 1; i++) {

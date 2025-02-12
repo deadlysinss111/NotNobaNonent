@@ -53,7 +53,7 @@ public:
 	virtual void OnActorHit(AActor* OtherActor, const FHitResult& Hit) override {};
 
 	UFUNCTION()
-	virtual void OnHealthChanged(float CurrentHealth) override {};
+	virtual void OnHealthChanged(float CurrentHealth) override;
 	UFUNCTION()
 	virtual void OnDeath() override {};
 };
