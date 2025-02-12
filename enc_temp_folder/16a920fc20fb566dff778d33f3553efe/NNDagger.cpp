@@ -82,9 +82,6 @@ void ANNDagger::HittingOverlapAction(AActor* OtherActor) {
 
 	if (OtherActor->Implements<UNNEntityInterface>())
 	{
-		if (ANNPlayerCharacter* entity = Cast<ANNPlayerCharacter>(OtherActor))
-			return;
-
 		INNEntityInterface* entity = Cast<INNEntityInterface>(OtherActor);
 		if (entity && entity->GetHealthComponent() != nullptr)
 		{
