@@ -30,7 +30,7 @@ protected:
 
 
 public:
-    virtual void Trigger() override;
+    virtual void Trigger(KeyState state) override;
     void Fire();
 
     AActor* _target;

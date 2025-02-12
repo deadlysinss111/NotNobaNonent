@@ -3,7 +3,7 @@
 
 #include "Abilities/NNFireAbitity.h"
 
-void UNNFireAbitity::Trigger()
+void UNNFireAbitity::Trigger(KeyState state)
 {
 
     if (!_owner) return;

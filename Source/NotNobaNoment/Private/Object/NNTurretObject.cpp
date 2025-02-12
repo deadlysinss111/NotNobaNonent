@@ -58,7 +58,7 @@ void ANNTurretObject::OnEnemyDetected()
 		UNNFireAbitity* abilityTemp = Cast<UNNFireAbitity>(_ability_1);
 		abilityTemp->_target = _target;
 		abilityTemp->_BPArrow = ActorBP;
-		_ability_1->Trigger();
+		_ability_1->Trigger(KeyState::None);
 	}
 	
 }

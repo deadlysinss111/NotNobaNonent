@@ -13,6 +13,7 @@ enum class KeyState {
 	Start = 0,
 	Hold,
 	End,
+	None = -1,
 };
 
 
