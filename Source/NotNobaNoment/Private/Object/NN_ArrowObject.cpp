@@ -43,8 +43,6 @@ void ANN_ArrowObject::Move(FVector direction, float speed)
 
 void ANN_ArrowObject::OnActorEnter(AActor* OtherActor)
 {	
-	UE_LOG(LogTemp, Warning, TEXT("ARROW entered in %s"), *OtherActor->GetName());
-
 	// other actor have a health component
 	if (OtherActor->Implements<UNNEntityInterface>())
 	{
@@ -58,25 +56,5 @@ void ANN_ArrowObject::OnActorEnter(AActor* OtherActor)
 
 	// destroy the arrow
 	Destroy();
-
-	UE_LOG(LogTemp, Warning, TEXT("Arrow destroyed"));
-}
-
-//Test hit
-void ANN_ArrowObject::OnActorHit(AActor* OtherActor, const FHitResult& Hit)
-{
-	UE_LOG(LogTemp, Warning, TEXT("Arrow hit %s"), *OtherActor->GetName());
-	// other actor have a health component
-	//if (OtherActor->Implements<UNNEntityInterface>())
-	//{
-	//	INNEntityInterface* entity = Cast<INNEntityInterface>(OtherActor);
-	//	if (entity)
-	//	{
-	//		entity->GetHealthComponent()->ApplyDamage(10.0f);
-	//	}
-	//}
-	//// destroy the arrow
-	//Destroy();
-	//UE_LOG(LogTemp, Warning, TEXT("Arrow destroyed"));
 }
 

@@ -77,14 +77,17 @@ void ANNDagger::HandedOverlapAction(AActor* OtherActor) {
 }
 
 void ANNDagger::HittingOverlapAction(AActor* OtherActor) {
-	GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, TEXT("HITTING"));
 
 	if (OtherActor->Implements<UNNEntityInterface>())
 	{
 		INNEntityInterface* entity = Cast<INNEntityInterface>(OtherActor);
-		if (entity)
+		if (entity && entity->GetHealthComponent() != nullptr)
 		{
+			//LOG entity name
+			UE_LOG(LogTemp, Warning, TEXT("HITTING %s"), *OtherActor->GetName());
 
+
+			GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, TEXT("DAMMAGE by Dagger 10"));
 			entity->GetHealthComponent()->ApplyDamage(_dammage);
 		}
 	}

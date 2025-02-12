@@ -72,7 +72,7 @@ void ANNPlayerCharacter::Tick(float DeltaTime)
         CachedDestination = Hit.Location;
     }
 
-    UE_LOG(LogTemp, Warning, TEXT("Mouse Location: %f, %f"), CachedDestination.X, CachedDestination.Y);
+    //UE_LOG(LogTemp, Warning, TEXT("Mouse Location: %f, %f"), CachedDestination.X, CachedDestination.Y);
 
     FVector worldDir = (CachedDestination - GetActorLocation()).GetSafeNormal();
     FVector alteredDir = FVector(worldDir.X, worldDir.Y, 0);

@@ -49,8 +49,8 @@ public:
 
 	// Events
 	virtual void OnActorEnter(AActor* OtherActor) override;
-	virtual void OnActorExit(AActor* OtherActor) override { return; };
-	virtual void OnActorHit(AActor* OtherActor, const FHitResult& Hit) override;
+	virtual void OnActorExit(AActor* OtherActor) override {};
+	virtual void OnActorHit(AActor* OtherActor, const FHitResult& Hit) override {};
 
 	virtual void OnHealthChanged(float CurrentHealth) override {};
 	virtual void OnDeath() override {};

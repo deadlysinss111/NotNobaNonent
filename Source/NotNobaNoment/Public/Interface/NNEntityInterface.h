@@ -48,30 +48,21 @@ public:
     void InitEventComponent(T* Owner) {
         if (!Owner) return;
 
-        // R�cup�ration des composants via les accesseurs
+		// Get the components
         UNNCollisionComponent* Collision = Owner->GetCollisionComponent();
         UNNHealthComponent* Health = Owner->GetHealthComponent();
 
-        // Attachements s�curis�s
+		// Bind the events
         if (Collision)
         {
             Collision->OnActorEnter.AddDynamic(Owner, &T::OnActorEnter);
             Collision->OnActorExit.AddDynamic(Owner, &T::OnActorExit);
             Collision->OnActorHit.AddDynamic(Owner, &T::OnActorHit);
         }
-        else
-        {
-            UE_LOG(LogTemp, Error, TEXT("%s: No valid CollisionComponent found!"), *Owner->GetName());
-        }
-
         if (Health)
         {
             Health->OnHealthChanged.AddDynamic(Owner, &T::OnHealthChanged);
             Health->OnDeath.AddDynamic(Owner, &T::OnDeath);
-        }
-        else
-        {
-            UE_LOG(LogTemp, Error, TEXT("%s: No valid HealthComponent found!"), *Owner->GetName());
         }
     }
 
