@@ -86,7 +86,7 @@ void ANNDagger::FlyingOverlapAction(AActor* OtherActor) {
 		if (UPrimitiveComponent* PhysComp = Cast<UPrimitiveComponent>(GetRootComponent()))
 		{
 			PhysComp->SetSimulatePhysics(false);
-			PhysComp->SetEnableGravity(false);
+			//PhysComp->SetEnableGravity(false);
 			PhysComp->SetPhysicsLinearVelocity(FVector::ZeroVector);
 			PhysComp->SetPhysicsAngularVelocityInDegrees(FVector::ZeroVector);
 			GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, TEXT("touched ground"));
@@ -99,7 +99,7 @@ void ANNDagger::FlyingOverlapAction(AActor* OtherActor) {
 		if (UPrimitiveComponent* PhysComp = Cast<UPrimitiveComponent>(GetRootComponent()))
 		{
 			PhysComp->SetSimulatePhysics(false);
-			PhysComp->SetEnableGravity(false);
+			//PhysComp->SetEnableGravity(false);
 			PhysComp->SetPhysicsLinearVelocity(FVector::ZeroVector);
 			PhysComp->SetPhysicsAngularVelocityInDegrees(FVector::ZeroVector);
 			ChangeState(DaggerState::Handed);
