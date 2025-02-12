@@ -1,10 +1,11 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "Abilities/Player/Assassin/NNDagger.h"
 #include "Kismet/KismetSystemLibrary.h"
 #include "NiagaraFunctionLibrary.h"
 #include "Character/NNPlayerCharacter.h"
+#include "Character/NNEnemyCharacter.h"
+#include "Abilities/Player/Assassin/NNDagger.h"
 
 // Sets default values
 ANNDagger::ANNDagger()
@@ -25,6 +26,7 @@ void ANNDagger::BeginPlay()
 	
 	FString AssetPath = FString::Printf(TEXT("NiagaraSystem'/Game/Entities/Heroes/Assassin/Abilities/DaggerSlash/DaggerSlashFX.DaggerSlashFX'"));
 	_pickupAttackFX = Cast<UNiagaraSystem>(StaticLoadObject(UNiagaraSystem::StaticClass(), this, *AssetPath));
+
 	if (!_pickupAttackFX)
 	{
 		GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Blue, TEXT("fail to load fx"));
@@ -77,7 +79,6 @@ void ANNDagger::HandedOverlapAction(AActor* OtherActor) {
 }
 
 void ANNDagger::HittingOverlapAction(AActor* OtherActor) {
-	GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, TEXT("HITTING"));
 
 	if (OtherActor->Implements<UNNEntityInterface>())
 	{
@@ -86,6 +87,10 @@ void ANNDagger::HittingOverlapAction(AActor* OtherActor) {
 		{
 
 			entity->GetHealthComponent()->ApplyDamage(_dammage);
+
+			if (ANNEnemyCharacter* enemy = Cast<ANNEnemyCharacter>(OtherActor)) {
+				enemy->KnockBack(this);
+			}
 		}
 	}
 
@@ -101,12 +106,13 @@ void ANNDagger::FlyingOverlapAction(AActor* OtherActor) {
 			PhysComp->SetPhysicsLinearVelocity(FVector::ZeroVector);
 			PhysComp->SetPhysicsAngularVelocityInDegrees(FVector::ZeroVector);
 			GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, TEXT("touched ground"));
-			ChangeState(DaggerState::Grounded);
+			//ChangeState(DaggerState::Grounded);
 			SetActorRotation(FRotator::MakeFromEuler(FVector(150, 0, 0)));
+			_ObjectsHitOnTheFly.Empty();
 		}
 	}
 	else if (ANNPlayerCharacter* character = Cast<ANNPlayerCharacter>(OtherActor)) {
-		GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, TEXT("touched player"));
+		/*GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, TEXT("touched player"));*/
 		if (UPrimitiveComponent* PhysComp = Cast<UPrimitiveComponent>(GetRootComponent()))
 		{
 			PhysComp->SetSimulatePhysics(false);
@@ -115,6 +121,19 @@ void ANNDagger::FlyingOverlapAction(AActor* OtherActor) {
 			PhysComp->SetPhysicsAngularVelocityInDegrees(FVector::ZeroVector);
 			ChangeState(DaggerState::Handed);
 			PickupAttack(character);
+			_ObjectsHitOnTheFly.Empty();
+		}
+	}
+	else if(INNEntityInterface* entity = Cast<INNEntityInterface>(OtherActor)){
+		if (_ObjectsHitOnTheFly.Contains(OtherActor))
+			return;
+
+		entity->GetHealthComponent()->ApplyDamage(_dammage);
+		_ObjectsHitOnTheFly.Add(OtherActor);
+
+		if (ANNEnemyCharacter* enemy = Cast<ANNEnemyCharacter>(OtherActor)) {
+				
+			enemy->KnockBack(this);
 		}
 	}
 }
@@ -171,9 +190,4 @@ void ANNDagger::Slash()
 void ANNDagger::SetBackToHanded() {
 	ChangeState(DaggerState::Handed);
 	GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, TEXT("backtohanded"));
-}
-
-void ANNDagger::Throw()
-{
-	
 }

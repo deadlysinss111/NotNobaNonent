@@ -49,6 +49,10 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Arrow")
 	float _dammage = 10.f;
 
+private:
+	UPROPERTY();
+	TArray<AActor*> _ObjectsHitOnTheFly;
+
 public:
 	virtual void BeginPlay() override;
 	virtual void Tick(float DeltaTime) override;
@@ -87,6 +91,5 @@ public:
 	void GroundedOverlapAction(AActor* OtherActor);
 
 	void Slash();
-	void Throw();
 	void PickupAttack(ANNPlayerCharacter* OtherActor);
 };

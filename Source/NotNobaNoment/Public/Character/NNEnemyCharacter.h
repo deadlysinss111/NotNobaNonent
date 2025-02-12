@@ -13,6 +13,16 @@ UCLASS()
 class NOTNOBANOMENT_API ANNEnemyCharacter : public ANNEntityCharacter
 {
 	GENERATED_BODY()
+
+protected:
+	bool _isBeingKnockbacked = false;
+	FVector _KBTargetPos;
+	FVector _KBDisplacementPerFrame;
+	float _KBLastDist;
+
+protected:
+	virtual void Tick(float DeltaTime) override;
 	
+public:
 	virtual void KnockBack(AActor* OtherActor);
 };
