@@ -26,3 +26,9 @@ void ANNEntityCharacter::Tick(float DeltaTime)
 {
     Super::Tick(DeltaTime);
 }
+
+void ANNEntityCharacter::OnHealthChanged(float CurrentHealth)
+{
+    //LOG
+	UE_LOG(LogTemp, Warning, TEXT("Health changed to: %f"), CurrentHealth);
+}

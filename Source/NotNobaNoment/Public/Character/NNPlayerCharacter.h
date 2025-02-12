@@ -6,6 +6,7 @@
 #include "Character/NNEntityCharacter.h"
 #include "Abilities/NNAbilitySetDataAsset.h"
 #include "Abilities/NNAbility.h"
+//#include "Interfaces/GeneriqueTeamAgentInterface.h"
 #include "NNPlayerCharacter.generated.h"
 
 /**
