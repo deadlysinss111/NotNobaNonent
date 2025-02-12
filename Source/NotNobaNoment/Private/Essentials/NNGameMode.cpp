@@ -1,22 +1,19 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
-
 #include "Essentials/NNGameMode.h"
-
-
+#include "Character/NNPlayerCharacter.h"
 DEFINE_LOG_CATEGORY(NN_GameMode);
 
-	/*  -----------    */
-   /*  CLASS METHODS  */
-  /*    -----------  */
+/*  -----------    */
+/*  CLASS METHODS  */
+/*    -----------  */
 
 // Constru & Destru
 ANNGameMode::ANNGameMode()
 {
-	// TODO: Use the correct custom classes when they exist.
-	
 	// Temporary field initializations
-	DefaultPawnClass = APawn::StaticClass();
+	// TODO: Use the correct custom classes when they exist.	
+	DefaultPawnClass = ANNPlayerCharacter::StaticClass();
 	PlayerControllerClass = APlayerController::StaticClass();
 
 	// Default fields initializiation
