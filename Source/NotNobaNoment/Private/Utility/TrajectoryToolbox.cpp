@@ -16,7 +16,7 @@ FVector TrajectoryToolbox::BellCurveInitialVelocity(FVector startPoint, FVector 
 {
     // Calculate distance and direction
     FVector direction = endPoint - startPoint;
-    float horizontalDistance = FVector(direction.X, 0, direction.Z).Size();
+    float horizontalDistance = FVector(direction.X, direction.Y, 0).Size();
 
     // Calculate the initial vertical velocity to reach the desired max height
     float vz0 = FMath::Sqrt(2 * gravity * apex);
@@ -30,25 +30,24 @@ FVector TrajectoryToolbox::BellCurveInitialVelocity(FVector startPoint, FVector 
 
     // Combine horizontal and vertical velocities
     direction.Normalize();
-    FVector initialVelocity = FVector(vx0 * direction.X, vx0 * direction.Z, vz0);
+    FVector initialVelocity = FVector(vx0 * direction.X, vx0 * direction.Y, vz0);
 
     return initialVelocity;
 }
 
 
-TArray<FVector> TrajectoryToolbox::LineRenderWithDirection(FVector origin, FVector direction, AActor* actorToIgnore)
+TArray<FVector> TrajectoryToolbox::LineRenderWithDirection(FVector origin, FVector direction, AActor* actorToIgnore, int splineSize, float step)
 {
     TArray<FVector> pathPoints;
 
     // We initialize base values
-    float step = .1f;
     FVector virtualPos = origin;
     FVector nextPos;
     float overlap;
     FHitResult hit;
 
     // This loop will calculate next position, check if we hit something and add point to draw in prediction each iteration 
-    for (int i = 1; i < 500; i++)
+    for (int i = 1; i < splineSize; i++)
     {
         nextPos = virtualPos + direction * step;
         direction += FVector(0, 0, step * -1);

@@ -86,9 +86,15 @@ protected:
 	void MoveRight(const FInputActionValue& InputValue);
 	void HandlePlayerDash();
 	void HandlePlayerLook(const FInputActionValue& InputValue);
-	void HandlePlayerAbility1(const FInputActionValue& InputValue);
-	void HandlePlayerAbility2(const FInputActionValue& InputValue);
-	void HandlePlayerAbility3(const FInputActionValue& InputValue);
+	void StartPlayerAbility1(const FInputActionValue& InputValue);
+	void HoldPlayerAbility1(const FInputActionValue& InputValue);
+	void EndPlayerAbility1(const FInputActionValue& InputValue);
+	void StartPlayerAbility2(const FInputActionValue& InputValue);
+	void HoldPlayerAbility2(const FInputActionValue& InputValue);
+	void EndPlayerAbility2(const FInputActionValue& InputValue);
+	void StartPlayerAbility3(const FInputActionValue& InputValue);
+	void HoldPlayerAbility3(const FInputActionValue& InputValue);
+	void EndPlayerAbility3(const FInputActionValue& InputValue);
 
 private:
 	FTimerHandle DashTimerHandle;

@@ -5,6 +5,8 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "Interface/NNEntityInterface.h"
+#include "Character/NNPlayerCharacter.h"
+#include "NiagaraComponent.h"
 #include <functional>
 #include "NNDagger.generated.h"
 
@@ -25,6 +27,10 @@ public:
 		Grounded,
 	};
 	
+private:
+	UNiagaraSystem* _pickupAttackFX;
+
+
 public:	
 	ANNDagger();
 
@@ -82,4 +88,5 @@ public:
 
 	void Slash();
 	void Throw();
+	void PickupAttack(ANNPlayerCharacter* OtherActor);
 };

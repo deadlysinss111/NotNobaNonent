@@ -18,7 +18,7 @@ class NOTNOBANOMENT_API UNNCollisionComponent : public UActorComponent
     GENERATED_BODY()
 
 protected:
-    UPROPERTY()
+    UPROPERTY(EditAnywhere)
     UPrimitiveComponent* CollisionComponent;
 
 public:

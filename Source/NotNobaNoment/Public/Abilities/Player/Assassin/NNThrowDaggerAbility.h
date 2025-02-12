@@ -6,9 +6,12 @@
 #include "Abilities/NNAbility.h"
 #include "NNDagger.h"
 #include "Components/SplineComponent.h"
+#include "Components/SplineMeshComponent.h"
 #include "NNThrowDaggerAbility.generated.h"
 
-DECLARE_DYNAMIC_DELEGATE(FActionToTrigger);
+DECLARE_DYNAMIC_DELEGATE_OneParam(FActionToTrigger, KeyState, state);
+
+#define SPLINE_SIZE		(80)
 
 /**
  * 
@@ -26,19 +29,26 @@ private:
 	
 public:
 	void Init(APawn* owner) override;
-	void Trigger() override;
+	void Trigger(KeyState state) override;
 
 	UFUNCTION()
-	void Throw();
+	void Throw(KeyState state);
 	UFUNCTION()
-	void Jump();
+	void Jump(KeyState state);
 	UFUNCTION()
-	void RenderCurve();
-	void GenerateSplineMesh(USplineComponent* Spline, UStaticMesh* Mesh, UMaterialInterface* Material);
+	void RenderCurve(KeyState state);
+
+	void ResetCurve();
 
 private:
 	UPROPERTY()
 	UStaticMesh* _mesh;
 	UPROPERTY()
 	UMaterialInterface* _material;
+
+private:
+	UPROPERTY()
+	USplineComponent* _spline;
+	UPROPERTY()
+	TArray<USplineMeshComponent*> _splineMeshes;
 };

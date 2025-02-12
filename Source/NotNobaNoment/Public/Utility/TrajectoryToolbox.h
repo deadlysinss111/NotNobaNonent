@@ -15,5 +15,5 @@ public:
 
 public:
 	static FVector BellCurveInitialVelocity(FVector startPoint, FVector endPoint, float apex, float gravity);
-	static TArray<FVector> LineRenderWithDirection(FVector origin, FVector direction, AActor* actorToIgnore);
+	static TArray<FVector> LineRenderWithDirection(FVector origin, FVector direction, AActor* actorToIgnore, int splineSize, float step = 1);
 };
