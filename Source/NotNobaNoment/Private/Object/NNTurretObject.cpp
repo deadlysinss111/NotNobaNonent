@@ -17,8 +17,6 @@ void ANNTurretObject::BeginPlay()
 {
 	Super::BeginPlay();
 
-
-
 	if (_abilitySet != NULL) {
 
 		_ability_1 = NewObject<UNNAbility>(this, _abilitySet->_ability_1);
@@ -33,11 +31,29 @@ void ANNTurretObject::BeginPlay()
 	}
 }
 
+// Called every frame
+void ANNTurretObject::Tick(float DeltaTime)
+{
+	Super::Tick(DeltaTime);
+	if (_ability1Cooldown > 0)
+	{
+		_ability1Cooldown -= DeltaTime;
+	}
+}
 
+void ANNTurretObject::OnHealthChanged(float CurrentHealth)
+{
+	_ability1Cooldown = 2;
+}
+
+void ANNTurretObject::OnDeath()
+{
+	Destroy();
+}
 
 void ANNTurretObject::OnEnemyDetected()
 {
-	if (_ability_1)
+	if (_ability_1 && _ability1Cooldown == 0)
 	{	
 		UNNFireAbitity* abilityTemp = Cast<UNNFireAbitity>(_ability_1);
 		abilityTemp->_target = _target;

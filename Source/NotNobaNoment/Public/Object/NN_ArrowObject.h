@@ -40,6 +40,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Arrow")
 	float _speed = 10.f;
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Arrow")
+	float _dammage = 10.f;
+
 	// Interface functions
 	virtual UNNCollisionComponent* GetCollisionComponent() const override { return CollisionComponent; }
 	virtual UNNHealthComponent* GetHealthComponent() const override { return nullptr; }

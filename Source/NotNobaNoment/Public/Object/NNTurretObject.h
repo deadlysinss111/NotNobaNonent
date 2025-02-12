@@ -28,6 +28,9 @@ protected:
 
 public:	
 
+	// Called every frame
+	virtual void Tick(float DeltaTime) override;
+
 	// Components
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
 	UNNCollisionComponent* CollisionComponent;
@@ -59,9 +62,9 @@ public:
 	virtual void OnActorHit(AActor* OtherActor, const FHitResult& Hit) override {};
 
 	UFUNCTION()
-	virtual void OnHealthChanged(float CurrentHealth) override {};
+	virtual void OnHealthChanged(float CurrentHealth) override;
 	UFUNCTION()
-	virtual void OnDeath() override {};
+	virtual void OnDeath() override;
 
 
 	// End INNEntityInterface
@@ -71,5 +74,9 @@ public:
 
 	UPROPERTY(EditDefaultsOnly, Category = "ActorSpawning")
 	TSubclassOf<AActor> ActorBP;
+
+	//Cooldowns for abilities if the turret takes damage
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Cooldowns")
+	float _ability1Cooldown = 0;
 
 };

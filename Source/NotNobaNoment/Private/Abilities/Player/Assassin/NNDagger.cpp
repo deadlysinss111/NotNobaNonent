@@ -62,11 +62,22 @@ void ANNDagger::ChangeState(DaggerState newState)
 }
 
 void ANNDagger::HandedOverlapAction(AActor* OtherActor) {
-
 }
 
 void ANNDagger::HittingOverlapAction(AActor* OtherActor) {
 	GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, TEXT("HITTING"));
+
+	if (OtherActor->Implements<UNNEntityInterface>())
+	{
+		INNEntityInterface* entity = Cast<INNEntityInterface>(OtherActor);
+		if (entity)
+		{
+
+			entity->GetHealthComponent()->ApplyDamage(_dammage);
+		}
+	}
+
+	//TODE: Add nockback function
 }
 
 void ANNDagger::FlyingOverlapAction(AActor* OtherActor) {

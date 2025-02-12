@@ -52,7 +52,7 @@ void ANN_ArrowObject::OnActorEnter(AActor* OtherActor)
 		if (entity)
 		{
 
-			entity->GetHealthComponent()->ApplyDamage(10.0f);
+			entity->GetHealthComponent()->ApplyDamage(_dammage);
 		}
 	}
 

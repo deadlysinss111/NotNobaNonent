@@ -40,6 +40,9 @@ public:
 	
 	//std::function<void(AActor*)> _currentStateAction;
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Arrow")
+	float _dammage = 10.f;
+
 public:
 	virtual void BeginPlay() override;
 	virtual void Tick(float DeltaTime) override;
