@@ -2,6 +2,8 @@
 
 #include "Essentials/NNGameMode.h"
 #include "Character/NNPlayerCharacter.h"
+
+
 DEFINE_LOG_CATEGORY(NN_GameMode);
 
 /*  -----------    */
@@ -39,7 +41,7 @@ void ANNGameMode::BeginPlay()
 	Super::BeginPlay();
 
 	// Intializes fields.
-	_ExitConds = TArray<TMap<FString, bool>>();
+	_ExitConds = TArray<UNNExitCondsDataAsset*>();
 	_LevelsToLoadOnExit = TArray<FString>();
 	_GameInstance = (UNNGameInstance*) UGameplayStatics::GetGameInstance(GetWorld());
 }
@@ -52,34 +54,68 @@ void ANNGameMode::ExitGameMode(FString ARGlevelname)
 
 
 /* _ExitConds getter & setter */
-const TArray<TMap<FString, bool>>& ANNGameMode::GetExitConds()
+const TArray<UNNExitCondsDataAsset*> ANNGameMode::GetAllExitCondsDA()
 {
 	return _ExitConds;
 }
-const TOptional<TMap<FString, bool>> ANNGameMode::GetExitCondsMap(unsigned int ARGexitCondIndex)
+const UNNExitCondsDataAsset* ANNGameMode::GetAnExitCondsDA(unsigned int ARGindex)
 {
-	if (!IsLevelIndexOOB(ARGexitCondIndex))
-		return _ExitConds[ARGexitCondIndex];	// This returns a valid TOptional since a value is retuned AND TOptional has an implicit conversion :3 (TL;DR magic QoL).
+	if (!IsLevelIndexOOB(ARGindex))
+		return _ExitConds[ARGindex];
 	else
-		return TOptional<TMap<FString, bool>>();	// This returns an invalid TOptional since no value is passed in its constructor.
+		return nullptr;
 }
-void ANNGameMode::SetExitCondsMap(unsigned int ARGexitCondIndex, const TMap<FString, bool>& ARGnewExitCondMap)
+void ANNGameMode::SetAllExitConds(unsigned int ARGindex, const UNNExitCondsDataAsset* ARGdataAsset)
 {
-	// Sets the new values
-	_ExitConds[ARGexitCondIndex] = ARGnewExitCondMap;
+	if (!IsLevelIndexOOB(ARGindex))
+		return;
 
-	// Try to exit the GameMode
-	TryExitGameMode(ARGexitCondIndex);
+	_ExitConds[ARGindex] = (UNNExitCondsDataAsset*)ARGdataAsset;
 }
-void ANNGameMode::SetOneExitCond(unsigned int ARGexitCondIndex, FString ARGcondString, bool ARGbool)
+void ANNGameMode::SetAllExitConds(unsigned int ARGindex, const TArray<FString> ARGcondNames, const TArray<bool> ARGcondValues)
 {
-	// Sets the new value
-	bool* value = _ExitConds[ARGexitCondIndex].Find(ARGcondString);
-	if (value != nullptr) *value = ARGbool;
 
-	// Try to exit the GameMode
-	TryExitGameMode(ARGexitCondIndex);
 }
+void ANNGameMode::SetOneExitConds(unsigned int ARGindex, const FString ARGcondName, const bool ARGcondValue)
+{
+	if (!IsLevelIndexOOB(ARGindex))
+		return;
+
+	bool* valPtr = _ExitConds[ARGindex]->_condCollection.Find(ARGcondName);
+	
+	if (valPtr != nullptr)
+		*valPtr = ARGcondValue;
+}
+
+//// LEGACY
+//const TArray<TMap<FString, bool>>& ANNGameMode::GetExitConds()
+//{
+//	return _ExitConds;
+//}
+//const TOptional<TMap<FString, bool>> ANNGameMode::GetExitCondsMap(unsigned int ARGexitCondIndex)
+//{
+//	if (!IsLevelIndexOOB(ARGexitCondIndex))
+//		return _ExitConds[ARGexitCondIndex];	// This returns a valid TOptional since a value is retuned AND TOptional has an implicit conversion :3 (TL;DR magic QoL).
+//	else
+//		return TOptional<TMap<FString, bool>>();	// This returns an invalid TOptional since no value is passed in its constructor.
+//}
+//void ANNGameMode::SetExitCondsMap(unsigned int ARGexitCondIndex, const TMap<FString, bool>& ARGnewExitCondMap)
+//{
+//	// Sets the new values
+//	_ExitConds[ARGexitCondIndex] = ARGnewExitCondMap;
+//
+//	// Try to exit the GameMode
+//	TryExitGameMode(ARGexitCondIndex);
+//}
+//void ANNGameMode::SetOneExitCond(unsigned int ARGexitCondIndex, FString ARGcondString, bool ARGbool)
+//{
+//	// Sets the new value
+//	bool* value = _ExitConds[ARGexitCondIndex].Find(ARGcondString);
+//	if (value != nullptr) *value = ARGbool;
+//
+//	// Try to exit the GameMode
+//	TryExitGameMode(ARGexitCondIndex);
+//}
 
 
 
@@ -96,27 +132,30 @@ bool ANNGameMode::IsLevelIndexOOB(unsigned int ARGindex)
 	// Valid index scenario
 	else return false;
 }
-void ANNGameMode::TryExitGameMode(unsigned int ARGexitCondIndex)
+void ANNGameMode::TryExitGameMode(int ARGexitCondIndex)
 {
-	// Retrieves what we're checking
-	TMap<FString, bool> mapCurChecked = _ExitConds[ARGexitCondIndex];
-	TArray<FString> arrKeysOfCurChecked;
-	mapCurChecked.GetKeys(arrKeysOfCurChecked);
+	//// LEGACY
+	//// Retrieves what we're checking
+	//TMap<FString, bool> mapCurChecked = _ExitConds[ARGexitCondIndex];
+	//TArray<FString> arrKeysOfCurChecked;
+	//mapCurChecked.GetKeys(arrKeysOfCurChecked);
 
-	// By default, assume we should call ExitGameMode().
-	bool bShouldCallExitGameMode = true;
-	for (const FString& key : arrKeysOfCurChecked)
-	{
-		// If an exit condition contradicts the above assumption, cancel the ExitGameMode() call.
-		if (mapCurChecked[key] == false)
-		{
-			bShouldCallExitGameMode = false;
-			break;
-		}
-	}
-	if (bShouldCallExitGameMode)
-	{
-		UE_LOG(NN_GameMode, Log, TEXT("ExitCond map %d allowed an exit ! Calling ExitGameMode..."), ARGexitCondIndex);
-		ExitGameMode(_LevelsToLoadOnExit[ARGexitCondIndex]);
-	}
+	//// By default, assume we should call ExitGameMode().
+	//bool bShouldCallExitGameMode = true;
+	//for (const FString& key : arrKeysOfCurChecked)
+	//{
+	//	// If an exit condition contradicts the above assumption, cancel the ExitGameMode() call.
+	//	if (mapCurChecked[key] == false)
+	//	{
+	//		bShouldCallExitGameMode = false;
+	//		break;
+	//	}
+	//}
+	//if (bShouldCallExitGameMode)
+	//{
+	//	UE_LOG(NN_GameMode, Log, TEXT("ExitCond map %d allowed an exit ! Calling ExitGameMode..."), ARGexitCondIndex);
+	//	ExitGameMode(_LevelsToLoadOnExit[ARGexitCondIndex]);
+	//}
+
+	UE_LOG(NN_GameMode, Warning, TEXT("NOT REIMPLEMENTED YET"));
 }

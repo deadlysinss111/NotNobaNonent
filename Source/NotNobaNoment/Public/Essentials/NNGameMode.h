@@ -11,7 +11,8 @@
 #include "GameFramework/PlayerState.h"		// Used as a default in constructor.
 #include "GameFramework/SpectatorPawn.h"	// Used as a default in constructor.
 #include "NNGameInstance.h"					// To load levels and use the ELevelName enum.
-/* GameMode's GameStates and HUD includes */
+/* Custom classes includes */
+#include "NNExitCondsDataAsset.h"
 #include "NNGameState.h"
 #include "NNHUD.h"
 
@@ -36,11 +37,21 @@ class NOTNOBANOMENT_API ANNGameMode : public AGameModeBase
    /*  CLASS FIELDS  */
   /*    ----------  */
 public:
+	// TODO: Get rid of "EditAnywhere" (BlueprintGetter=GetterFunctionName)
+
+	UPROPERTY(EditAnywhere, Category = "Functionnality")
 	TArray<FString> _LevelsToLoadOnExit;
 
 protected:
 	UNNGameInstance* _GameInstance;
-	TArray<TMap<FString, bool>> _ExitConds;		// Private from other classes so the setter can have extra logic
+	UPROPERTY(EditAnywhere, Category = "Functionnality")
+	TArray<UNNExitCondsDataAsset*> _ExitConds;
+
+	UPROPERTY(EditAnywhere, Category = "Functionnality")
+	TArray<TSubclassOf<UNNExitCondsDataAsset>> _ExitCondsFlexible;
+
+	//// LEGACY
+	//TArray<TMap<FString, bool>> _ExitConds;		// Private from other classes so the setter can have extra logic
 	
 
 
@@ -53,13 +64,21 @@ public:
 	~ANNGameMode();
 
 	/* _ExitConds getter & setter */
-	const TArray<TMap<FString, bool>>& GetExitConds();
-	const TOptional<TMap<FString, bool>> GetExitCondsMap(unsigned int ARGexitCondIndex);
-	void SetExitCondsMap(unsigned int ARGexitCondIndex, const TMap<FString, bool>& ARGnewExitCondMap);
-	void SetOneExitCond(unsigned int ARGexitCondIndex, FString ARGcondString, bool ARGbool);
+	const TArray<UNNExitCondsDataAsset*> GetAllExitCondsDA();
+	const UNNExitCondsDataAsset* GetAnExitCondsDA(unsigned int ARGindex);
+	void SetAllExitConds(unsigned int ARGindex, const UNNExitCondsDataAsset* ARGdataAsset);
+	void SetAllExitConds(unsigned int ARGindex, const TArray<FString> ARGcondNames, const TArray<bool> ARGcondValues);
+	void SetOneExitConds(unsigned int ARGindex, const FString ARGcondName, const bool ARGcondValues);
+
+	//// LEGACY
+	//const TArray<TMap<FString, bool>>& GetExitConds();
+	//const TOptional<TMap<FString, bool>> GetExitCondsMap(unsigned int ARGexitCondIndex);
+	//void SetExitCondsMap(unsigned int ARGexitCondIndex, const TMap<FString, bool>& ARGnewExitCondMap);
+	//void SetOneExitCond(unsigned int ARGexitCondIndex, FString ARGcondString, bool ARGbool);
 
 	// Try to exit the GameMode given a certain condition map. Called internally when a boolean changes, but also callable by other classes to implement in events.
-	void TryExitGameMode(unsigned int ARGexitCondIndex);
+	UFUNCTION(BlueprintCallable)
+	void TryExitGameMode(int ARGexitCondIndex);
 
 
 protected:

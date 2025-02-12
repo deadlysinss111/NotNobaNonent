@@ -30,8 +30,8 @@ class NOTNOBANOMENT_API ANNHUD : public AHUD
 	/*  CLASS FIELDS  */
 	/*    ----------  */
 private:
-	// UPROPERTY(EditDefaultsOnly, Category = "Code | UserWidget")
-	// TSubclassOf<UUserWidget> UserWidget;
+	 UPROPERTY(EditAnywhere, Category = "Code | UserWidget")
+	 TSubclassOf<UUserWidget> UserWidget;
 
 	/*  -----------    */
 	/*  CLASS METHODS  */
