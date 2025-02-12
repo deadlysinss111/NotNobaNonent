@@ -72,6 +72,9 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void OnEnemyDetected();
 
+	UFUNCTION(BlueprintCallable)
+	void LookAtTarget();
+
 	UPROPERTY(EditDefaultsOnly, Category = "ActorSpawning")
 	TSubclassOf<AActor> ActorBP;
 
