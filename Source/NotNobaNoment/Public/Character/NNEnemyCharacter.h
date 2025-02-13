@@ -23,6 +23,8 @@ protected:
 	FVector _KBDisplacementPerFrame;
 	float _KBLastDist;
 
+	bool _provideContactDamage = true;
+
 public:
 	UPROPERTY(EditAnywhere)
 	UNNEnemyAbilitySetDataAsset* _abilitySet;
@@ -37,6 +39,8 @@ public:
 protected:
 	virtual void BeginPlay() override;
 	virtual void Tick(float DeltaTime) override;
+
+	virtual void OnActorEnter(AActor* OtherActor) override;
 	
 public:
 	virtual void KnockBack(AActor* OtherActor);

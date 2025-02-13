@@ -15,5 +15,15 @@ class NOTNOBANOMENT_API UNNJumpAsTask : public UBTTaskNode
 	GENERATED_BODY()
 	
 public:
-	AIMODULE_API virtual EBTNodeResult::Type ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory) override;
+	UNNJumpAsTask();
+
+private:
+	bool _jumpCond = false;
+	bool _stopCond = false;
+
+public:
+	virtual EBTNodeResult::Type ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory) override;
+	virtual void TickTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory, float DeltaSeconds) override;
+
+	void OnDelayOver();
 };

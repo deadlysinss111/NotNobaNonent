@@ -13,8 +13,8 @@ void UNNJump::Init(APawn* owner) {
 
 void UNNJump::Trigger() {
 	// Animate spring
-	FTimerHandle UnusedHandle;
-	_owner->GetWorldTimerManager().SetTimer(UnusedHandle, this, &UNNJump::OnDelayOver, 2, false);
+	/*FTimerHandle UnusedHandle;
+	_owner->GetWorldTimerManager().SetTimer(UnusedHandle, this, &UNNJump::OnDelayOver, 2, false);*/
 
 	
 }
