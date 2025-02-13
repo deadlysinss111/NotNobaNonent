@@ -25,9 +25,9 @@ private:
 	UNiagaraSystem* _slashFX;
 
 public:
-	UFUNCTION()
+	// Inherit UFUNCTION somehow
 	void Init(APawn* owner) override;
 
-	UFUNCTION()
+	// Inherit UFUNCTION somehow
 	void Trigger(KeyState state) override;
 };

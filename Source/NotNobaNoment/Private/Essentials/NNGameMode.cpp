@@ -175,7 +175,7 @@ void ANNGameMode::TryExitGameMode(int ARGexitCondIndex)
 		UE_LOG(NN_GameMode, Error, TEXT("Index was negative !"));
 		return;
 	}
-	if(ARGexitCondIndex >= _ExitConds.Num())
+	if (ARGexitCondIndex >= _ExitConds.Num())
 	{
 		UE_LOG(NN_GameMode, Error, TEXT("Index was too high (index was %d out of %d) !"), ARGexitCondIndex, _ExitConds.Num());
 		return;

@@ -8,7 +8,7 @@
 #include "InputActionValue.h"
 #include "NNAbility.generated.h"
 
-UENUM()
+UENUM(/*BlueprintType*/)
 enum class KeyState {
 	Start = 0,
 	Hold,
@@ -17,7 +17,7 @@ enum class KeyState {
 };
 
 
-UCLASS()
+UCLASS(BlueprintType)
 class NOTNOBANOMENT_API UNNAbility : public UObject
 {
 	GENERATED_BODY()
@@ -28,7 +28,10 @@ protected:
 	APawn* _owner;
 
 public:
+	UFUNCTION()
 	virtual void Init(APawn* owner);
-	virtual void Trigger(KeyState state) {};
+
+	UFUNCTION(BlueprintCallable)
+	virtual void Trigger(KeyState state = KeyState::None) {};
 	
 };

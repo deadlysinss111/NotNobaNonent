@@ -1,8 +1,8 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "Blueprint/AIBlueprintHelperLibrary.h"
 #include "Character/NNEnemyCharacter.h"
+#include "Blueprint/AIBlueprintHelperLibrary.h"
 
 void ANNEnemyCharacter::BeginPlay() {
 	_blackBoard = UAIBlueprintHelperLibrary::GetBlackboard(this);

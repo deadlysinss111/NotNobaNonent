@@ -19,6 +19,20 @@ ANNEntityCharacter::ANNEntityCharacter()
 void ANNEntityCharacter::BeginPlay()
 {
     Super::BeginPlay();
+
+    if (_abilitySet != NULL) {
+        
+        _ability_1 = NewObject<UNNAbility>(this, _abilitySet->_ability_1);
+        _ability_1->Init(this);
+
+        _ability_2 = NewObject<UNNAbility>(this, _abilitySet->_ability_2);
+        _ability_2->Init(this);
+
+        _ability_3 = NewObject<UNNAbility>(this, _abilitySet->_ability_3);
+        _ability_3->Init(this);
+    }
+    else
+        GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, TEXT("the ability set is null"));
 }
 
 // Called every frame
