@@ -8,7 +8,6 @@
 #include "Interface/NNEntityInterface.h"
 #include "Component/NNHealthComponent.h"
 #include "Component/NNCollisionComponent.h"
-#include "Abilities/NNAbilitySetDataAsset.h"
 #include "Abilities/NNAbility.h"
 #include <InputAction.h>
 
@@ -20,20 +19,8 @@ class NOTNOBANOMENT_API ANNEntityCharacter : public ACharacter, public INNEntity
 	GENERATED_BODY()
 
 public:
-	// Sets default values for this character's properties
-	ANNEntityCharacter(); 
+	ANNEntityCharacter();
 
-	UPROPERTY(EditAnywhere)
-	UNNAbilitySetDataAsset* _abilitySet;
-
-	UPROPERTY(BlueprintReadWrite)
-	UNNAbility* _ability_1;
-
-	UPROPERTY(BlueprintReadWrite)
-	UNNAbility* _ability_2;
-
-	UPROPERTY(BlueprintReadWrite)
-	UNNAbility* _ability_3;
 
 protected:
 	// Called when the game starts or when spawned

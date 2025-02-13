@@ -5,9 +5,8 @@
 #include "CoreMinimal.h"
 #include "Character/NNEntityCharacter.h"
 
-/* MOVED IN ENEITTY */
-//#include "Abilities/NNAbilitySetDataAsset.h"
-//#include "Abilities/NNAbility.h"
+#include "Abilities/NNAbilitySetDataAsset.h"
+#include "Abilities/NNAbility.h"
 
 //#include "Interfaces/GeneriqueTeamAgentInterface.h"
 
@@ -36,18 +35,17 @@ public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 public:
-	// MOVED TO ENTITY
-	//UPROPERTY(EditAnywhere)
-	//UNNAbilitySetDataAsset* _abilitySet;
+	UPROPERTY(EditAnywhere)
+	UNNAbilitySetDataAsset* _abilitySet;
 
-	//UPROPERTY()
-	//UNNAbility* _ability_1;
+	UPROPERTY()
+	UNNAbility* _ability_1;
 
-	//UPROPERTY()
-	//UNNAbility* _ability_2;
+	UPROPERTY()
+	UNNAbility* _ability_2;
 
-	//UPROPERTY()
-	//UNNAbility* _ability_3;
+	UPROPERTY()
+	UNNAbility* _ability_3;
 
 	//Input System
 protected:

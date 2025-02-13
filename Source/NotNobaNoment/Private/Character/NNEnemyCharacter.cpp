@@ -5,7 +5,15 @@
 #include "Blueprint/AIBlueprintHelperLibrary.h"
 
 void ANNEnemyCharacter::BeginPlay() {
+	Super::BeginPlay();
+
 	_blackBoard = UAIBlueprintHelperLibrary::GetBlackboard(this);
+
+	for (TSubclassOf<UNNEnemyAbility> abilityData : _abilitySet->_abilities) {
+		UNNEnemyAbility* ability = NewObject<UNNEnemyAbility>(this, abilityData);
+		ability->Init(this);
+		_abilities.Add(ability);
+	}
 }
 
 void ANNEnemyCharacter::Tick(float DeltaTime) {

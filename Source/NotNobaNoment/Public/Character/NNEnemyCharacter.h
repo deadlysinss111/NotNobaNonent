@@ -4,6 +4,8 @@
 
 #include "CoreMinimal.h"
 #include "Character/NNEntityCharacter.h"
+#include "Abilities/NNEnemyAbility.h"
+#include "Abilities/NNEnemyAbilitySetDataAsset.h"
 #include "BehaviorTree/BlackboardComponent.h"
 #include "NNEnemyCharacter.generated.h"
 
@@ -20,6 +22,13 @@ protected:
 	FVector _KBTargetPos;
 	FVector _KBDisplacementPerFrame;
 	float _KBLastDist;
+
+public:
+	UPROPERTY(EditAnywhere)
+	UNNEnemyAbilitySetDataAsset* _abilitySet;
+
+	UPROPERTY(BlueprintReadWrite)
+	TArray<UNNEnemyAbility*> _abilities;
 
 public:
 	UPROPERTY()
