@@ -61,7 +61,7 @@ public:
         }
         else
         {
-            UE_LOG(LogTemp, Error, TEXT("%s: No valid CollisionComponent found!"), *Owner->GetName());
+            //UE_LOG(LogTemp, Error, TEXT("%s: No valid CollisionComponent found!"), *Owner->GetName());
         }
 
         if (Health)
@@ -71,7 +71,7 @@ public:
         }
         else
         {
-            UE_LOG(LogTemp, Error, TEXT("%s: No valid HealthComponent found!"), *Owner->GetName());
+            //UE_LOG(LogTemp, Error, TEXT("%s: No valid HealthComponent found!"), *Owner->GetName());
         }
     }
 
