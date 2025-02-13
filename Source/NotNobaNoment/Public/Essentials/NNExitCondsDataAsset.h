@@ -19,7 +19,7 @@
 
 DECLARE_LOG_CATEGORY_EXTERN(NN_ExitCondDataAsset, Log, All);
 
-UCLASS(Blueprintable, BlueprintType)
+UCLASS()
 class NOTNOBANOMENT_API UNNExitCondsDataAsset : public UDataAsset
 {
 	GENERATED_BODY()

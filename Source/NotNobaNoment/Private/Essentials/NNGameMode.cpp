@@ -15,7 +15,7 @@ ANNGameMode::ANNGameMode()
 {
 	// Temporary field initializations
 	// TODO: Use the correct custom classes when they exist.	
-	DefaultPawnClass = ANNPlayerCharacter::StaticClass();
+	DefaultPawnClass = APawn::StaticClass();
 	PlayerControllerClass = APlayerController::StaticClass();
 
 	// Default fields initializiation
@@ -44,6 +44,10 @@ void ANNGameMode::BeginPlay()
 	_ExitConds = TArray<UNNExitCondsDataAsset*>();
 	_LevelsToLoadOnExit = TArray<FString>();
 	_GameInstance = (UNNGameInstance*) UGameplayStatics::GetGameInstance(GetWorld());
+
+	//// Shows its widget if it has one
+	//HUDClass->
+	//CreateWidget<>();
 }
 void ANNGameMode::ExitGameMode(FString ARGlevelname)
 {
@@ -74,9 +78,17 @@ void ANNGameMode::SetAllExitConds(unsigned int ARGindex, const UNNExitCondsDataA
 }
 void ANNGameMode::SetAllExitConds(unsigned int ARGindex, const TArray<FString> ARGcondNames, const TArray<bool> ARGcondValues)
 {
+	// Handles invalid cases
+	if (ARGcondNames.Num() != ARGcondValues.Num())
+	{
+		UE_LOG(NN_GameMode, Error, TEXT("SetAllExitCOnds() says : The 2 arrays were no of the same size ! Setter did nothing, returning..."));
+		return;
+	}
 
+	for (int i = 0;  i < ARGcondNames.Num();  i++)
+		SetOneExitCond(ARGindex, ARGcondNames[i], ARGcondValues[i]);
 }
-void ANNGameMode::SetOneExitConds(unsigned int ARGindex, const FString ARGcondName, const bool ARGcondValue)
+void ANNGameMode::SetOneExitCond(unsigned int ARGindex, const FString ARGcondName, const bool ARGcondValue)
 {
 	if (!IsLevelIndexOOB(ARGindex))
 		return;
@@ -139,7 +151,7 @@ void ANNGameMode::TryExitGameMode(int ARGexitCondIndex)
 	//TMap<FString, bool> mapCurChecked = _ExitConds[ARGexitCondIndex];
 	//TArray<FString> arrKeysOfCurChecked;
 	//mapCurChecked.GetKeys(arrKeysOfCurChecked);
-
+	//
 	//// By default, assume we should call ExitGameMode().
 	//bool bShouldCallExitGameMode = true;
 	//for (const FString& key : arrKeysOfCurChecked)
@@ -157,5 +169,37 @@ void ANNGameMode::TryExitGameMode(int ARGexitCondIndex)
 	//	ExitGameMode(_LevelsToLoadOnExit[ARGexitCondIndex]);
 	//}
 
-	UE_LOG(NN_GameMode, Warning, TEXT("NOT REIMPLEMENTED YET"));
+	// Handles invalid cases
+	if (ARGexitCondIndex < 0)
+	{
+		UE_LOG(NN_GameMode, Error, TEXT("Index was negative !"));
+		return;
+	}
+	if(ARGexitCondIndex >= _ExitConds.Num())
+	{
+		UE_LOG(NN_GameMode, Error, TEXT("Index was too high (index was %d out of %d) !"), ARGexitCondIndex, _ExitConds.Num());
+		return;
+	}
+
+	// Retrieves what we're checking
+	TMap<FString, bool> ExitCondsToCheck = _ExitConds[ARGexitCondIndex]->_condCollection;
+	TArray<FString> arrKeys;
+	ExitCondsToCheck.GetKeys(arrKeys);
+	
+	// By default, assume we should call ExitGameMode().
+	bool bShouldCallExitGameMode = true;
+	for (const FString& key : arrKeys)
+	{
+		// If an exit condition contradicts the above assumption, cancel the ExitGameMode() call.
+		if (ExitCondsToCheck[key] == false)
+		{
+			bShouldCallExitGameMode = false;
+			break;
+		}
+	}
+	if (bShouldCallExitGameMode)
+	{
+		UE_LOG(NN_GameMode, Log, TEXT("ExitCond map %d allowed an exit ! Calling ExitGameMode..."), ARGexitCondIndex);
+		ExitGameMode(_LevelsToLoadOnExit[ARGexitCondIndex]);
+	}
 }

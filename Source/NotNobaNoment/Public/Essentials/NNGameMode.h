@@ -44,11 +44,9 @@ public:
 
 protected:
 	UNNGameInstance* _GameInstance;
-	UPROPERTY(EditAnywhere, Category = "Functionnality")
-	TArray<UNNExitCondsDataAsset*> _ExitConds;
 
 	UPROPERTY(EditAnywhere, Category = "Functionnality")
-	TArray<TSubclassOf<UNNExitCondsDataAsset>> _ExitCondsFlexible;
+	TArray<UNNExitCondsDataAsset*> _ExitConds;
 
 	//// LEGACY
 	//TArray<TMap<FString, bool>> _ExitConds;		// Private from other classes so the setter can have extra logic
@@ -68,7 +66,7 @@ public:
 	const UNNExitCondsDataAsset* GetAnExitCondsDA(unsigned int ARGindex);
 	void SetAllExitConds(unsigned int ARGindex, const UNNExitCondsDataAsset* ARGdataAsset);
 	void SetAllExitConds(unsigned int ARGindex, const TArray<FString> ARGcondNames, const TArray<bool> ARGcondValues);
-	void SetOneExitConds(unsigned int ARGindex, const FString ARGcondName, const bool ARGcondValues);
+	void SetOneExitCond(unsigned int ARGindex, const FString ARGcondName, const bool ARGcondValues);
 
 	//// LEGACY
 	//const TArray<TMap<FString, bool>>& GetExitConds();
