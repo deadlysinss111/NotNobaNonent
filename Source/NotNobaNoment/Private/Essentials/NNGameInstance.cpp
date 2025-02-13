@@ -57,6 +57,11 @@ void UNNGameInstance::Init()
 /* Level loaders */
 void UNNGameInstance::LoadLevel(FString ARGlevelName)
 {
-	// Loads the level if the index is a valid one.
-	UGameplayStatics::OpenLevel(GetWorld()/*<-- Context arg*/, FName(*ARGlevelName));
+	UWorld* curWorld = GetWorld();
+	if (curWorld == nullptr)
+	{
+		UE_LOG(NN_GameInstance, Error, TEXT("LoadLevel says : GetWorld() returned nullptr somehow ! Can't proceed, retuning..."));
+		return;
+	}
+	else UGameplayStatics::OpenLevel(curWorld/*<-- Context arg*/, FName(*ARGlevelName));
 }

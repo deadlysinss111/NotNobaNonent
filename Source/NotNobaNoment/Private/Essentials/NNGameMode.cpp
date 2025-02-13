@@ -40,12 +40,10 @@ void ANNGameMode::BeginPlay()
 	// AGameModeBase default BeginPlay call.
 	Super::BeginPlay();
 
-	// Intializes fields.
-	_ExitConds = TArray<UNNExitCondsDataAsset*>();
-	_LevelsToLoadOnExit = TArray<FString>();
+	//// Intializes unchanging fields.
 	_GameInstance = (UNNGameInstance*) UGameplayStatics::GetGameInstance(GetWorld());
 
-	//// Shows its widget if it has one
+	//// Shows its widget if it has one. If this code is commented, then it is done in BPs.
 	//HUDClass->
 	//CreateWidget<>();
 }
@@ -177,7 +175,7 @@ void ANNGameMode::TryExitGameMode(int ARGexitCondIndex)
 	}
 	if (ARGexitCondIndex >= _ExitConds.Num())
 	{
-		UE_LOG(NN_GameMode, Error, TEXT("Index was too high (index was %d out of %d) !"), ARGexitCondIndex, _ExitConds.Num());
+		UE_LOG(NN_GameMode, Error, TEXT("Index was too high (index was %d for an array of size %d) !"), ARGexitCondIndex, _ExitConds.Num());
 		return;
 	}
 
