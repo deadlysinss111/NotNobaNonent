@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "Character/NNEntityCharacter.h"
 
+// Extra includes
 /* MOVED IN ENEITTY */
 //#include "Abilities/NNAbilitySetDataAsset.h"
 //#include "Abilities/NNAbility.h"
@@ -36,6 +37,10 @@ public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 public:
+	// Uncomment and adapt if UserWidget for the player becomes a C++ class
+	//UPROPERTY(BlueprintReadWrite)
+	//UUserWidget* _DesignatedUserWidget;
+
 	// MOVED TO ENTITY
 	//UPROPERTY(EditAnywhere)
 	//UNNAbilitySetDataAsset* _abilitySet;
@@ -69,12 +74,27 @@ protected:
 	//Competences
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Entity")
 	class UInputAction* Ability1Action;
+	UPROPERTY(BlueprintReadWrite, Category = "Entity")
+	float ability1Cooldown;
+	float ability1RemainingCooldown;
+	bool bIsAbility1UseAllowed;
+	FTimerHandle Ability1Authoriser;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Entity")
 	class UInputAction* Ability2Action;
+	UPROPERTY(BlueprintReadWrite, Category = "Entity")
+	float ability2Cooldown;
+	float ability2RemainingCooldown;
+	bool bIsAbility2UseAllowed;
+	FTimerHandle Ability2Authoriser;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Entity")
 	class UInputAction* Ability3Action;
+	UPROPERTY(BlueprintReadWrite, Category = "Entity")
+	float ability3Cooldown;
+	float ability3RemainingCooldown;
+	bool bIsAbility3UseAllowed;
+	FTimerHandle Ability3Authoriser;
 
 	//Camera
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Entity")
@@ -91,6 +111,7 @@ protected:
 	void MoveRight(const FInputActionValue& InputValue);
 	void HandlePlayerDash();
 	void HandlePlayerLook(const FInputActionValue& InputValue);
+
 	void StartPlayerAbility1(const FInputActionValue& InputValue);
 	void HoldPlayerAbility1(const FInputActionValue& InputValue);
 	void EndPlayerAbility1(const FInputActionValue& InputValue);
@@ -100,6 +121,11 @@ protected:
 	void StartPlayerAbility3(const FInputActionValue& InputValue);
 	void HoldPlayerAbility3(const FInputActionValue& InputValue);
 	void EndPlayerAbility3(const FInputActionValue& InputValue);
+
+	void SetAbsiltity1UseAllowed();
+	void SetAbsiltity2UseAllowed();
+	void SetAbsiltity3UseAllowed();
+
 
 private:
 	FTimerHandle DashTimerHandle;
