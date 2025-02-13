@@ -1,11 +1,11 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
+#include "Abilities/Player/Assassin/NNDagger.h"
 #include "Kismet/KismetSystemLibrary.h"
 #include "NiagaraFunctionLibrary.h"
 #include "Character/NNPlayerCharacter.h"
 #include "Character/NNEnemyCharacter.h"
-#include "Abilities/Player/Assassin/NNDagger.h"
 
 // Sets default values
 ANNDagger::ANNDagger()
