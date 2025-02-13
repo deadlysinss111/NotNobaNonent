@@ -9,6 +9,7 @@ void UNNThrowDaggerAbility::Init(APawn* owner) {
 
 	_currentAction.BindUFunction(this, FName("RenderCurve"));
 
+
 	TArray<AActor*> AttachedActors;
 	_owner->GetAttachedActors(AttachedActors);
 	for (AActor* Child : AttachedActors)
