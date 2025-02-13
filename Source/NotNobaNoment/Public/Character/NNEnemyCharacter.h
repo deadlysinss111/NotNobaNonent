@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Character/NNEntityCharacter.h"
+#include "BehaviorTree/BlackboardComponent.h"
 #include "NNEnemyCharacter.generated.h"
 
 /**
@@ -20,7 +21,12 @@ protected:
 	FVector _KBDisplacementPerFrame;
 	float _KBLastDist;
 
+public:
+	UPROPERTY()
+	UBlackboardComponent* _blackBoard;
+
 protected:
+	virtual void BeginPlay() override;
 	virtual void Tick(float DeltaTime) override;
 	
 public:
