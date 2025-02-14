@@ -22,6 +22,7 @@ UNNCollisionComponent::UNNCollisionComponent()
     CollisionComponent->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
     CollisionComponent->SetCollisionResponseToAllChannels(ECR_Ignore);
     CollisionComponent->SetCollisionResponseToChannel(ECC_Pawn, ECR_Overlap); // Par défaut en mode Overlap
+    CollisionComponent->SetCollisionResponseToChannel(ECC_WorldStatic, ECR_Overlap); // Par défaut en mode Overlap
     CollisionComponent->SetCollisionResponseToChannel(ECC_PhysicsBody, ECR_Block); // Permet les hits
 
     // Attacher les événements de collision
