@@ -5,6 +5,8 @@
 #include "CoreMinimal.h"
 #include "Abilities/NNAbility.h"
 #include "NiagaraComponent.h"
+#include "Perception/AIPerceptionSystem.h"
+#include "Perception/AIPerceptionStimuliSourceComponent.h"
 #include "NNSmokeAbility.generated.h"
 
 /**
