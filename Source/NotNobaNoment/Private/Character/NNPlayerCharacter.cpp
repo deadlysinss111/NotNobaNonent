@@ -39,11 +39,13 @@ void ANNPlayerCharacter::BeginPlay()
         _ability_2 = NewObject<UNNAbility>(this, _abilitySet->_ability_2);
         _ability_2->Init(this);
 
-        _ability_3 = NewObject<UNNAbility>(this, _abilitySet->_ability_3);
-        _ability_3->Init(this);
+       _ability_3 = NewObject<UNNAbility>(this, _abilitySet->_ability_3);
+       _ability_3->Init(this);
     }
     else
-        GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, TEXT("the ability set is null"));
+       GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, TEXT("the ability set is null"));
+
+    bIsDaggerInHand = true;
 }
 
 /**
@@ -53,6 +55,10 @@ void ANNPlayerCharacter::BeginPlay()
 void ANNPlayerCharacter::Tick(float DeltaTime)
 {
     Super::Tick(DeltaTime);
+
+    ability1RemainingCooldown = FMath::Max(ability1RemainingCooldown - DeltaTime, 0);
+    ability2RemainingCooldown = FMath::Max(ability2RemainingCooldown - DeltaTime, 0);
+    ability3RemainingCooldown = FMath::Max(ability3RemainingCooldown - DeltaTime, 0);
 
     /*float mouseX;
     float mouseY;
@@ -181,16 +187,26 @@ void ANNPlayerCharacter::HandlePlayerLook(const FInputActionValue& InputValue)
  */
 void ANNPlayerCharacter::StartPlayerAbility1(const FInputActionValue& InputValue)
 {
+    if (!bIsAbility1UseAllowed) return;
+
     _ability_1->Trigger(KeyState::Start);
+
+    GetWorldTimerManager().SetTimer(Ability1Authoriser, this, &ANNPlayerCharacter::SetAbiltity1UseAllowed, ability1Cooldown, false);
+    bIsAbility1UseAllowed = false;
+    ability1RemainingCooldown = ability1Cooldown;
 }
 
 void ANNPlayerCharacter::HoldPlayerAbility1(const FInputActionValue& InputValue)
 {
+    if (!bIsAbility1UseAllowed) return;
+
     _ability_1->Trigger(KeyState::Hold);
 }
 
 void ANNPlayerCharacter::EndPlayerAbility1(const FInputActionValue& InputValue)
 {
+    if (!bIsAbility1UseAllowed) return;
+
     _ability_1->Trigger(KeyState::End);
 }
 
@@ -200,16 +216,26 @@ void ANNPlayerCharacter::EndPlayerAbility1(const FInputActionValue& InputValue)
  */
 void ANNPlayerCharacter::StartPlayerAbility2(const FInputActionValue& InputValue)
 {
+    if (!bIsAbility2UseAllowed) return;
+
     _ability_2->Trigger(KeyState::Start);
+
+    GetWorldTimerManager().SetTimer(Ability1Authoriser, this, &ANNPlayerCharacter::SetAbiltity2UseAllowed, ability2Cooldown, false);
+    bIsAbility2UseAllowed = false;
+    ability2RemainingCooldown = ability2Cooldown;
 }
 
 void ANNPlayerCharacter::HoldPlayerAbility2(const FInputActionValue& InputValue)
 {
+    if (!bIsAbility2UseAllowed) return;
+
     _ability_2->Trigger(KeyState::Hold);
 }
 
 void ANNPlayerCharacter::EndPlayerAbility2(const FInputActionValue& InputValue)
 {
+    if (!bIsAbility2UseAllowed) return;
+
     _ability_2->Trigger(KeyState::End);
 }
 
@@ -219,16 +245,26 @@ void ANNPlayerCharacter::EndPlayerAbility2(const FInputActionValue& InputValue)
  */
 void ANNPlayerCharacter::StartPlayerAbility3(const FInputActionValue& InputValue)
 {
+    if (!bIsAbility3UseAllowed) return;
+
     _ability_3->Trigger(KeyState::Start);
+
+    GetWorldTimerManager().SetTimer(Ability1Authoriser, this, &ANNPlayerCharacter::SetAbiltity3UseAllowed, ability3Cooldown, false);
+    bIsAbility3UseAllowed = false;
+    ability3RemainingCooldown = ability3Cooldown;
 }
 
 void ANNPlayerCharacter::HoldPlayerAbility3(const FInputActionValue& InputValue)
 {
+    if (!bIsAbility3UseAllowed) return;
+
     _ability_3->Trigger(KeyState::Hold);
 }
 
 void ANNPlayerCharacter::EndPlayerAbility3(const FInputActionValue& InputValue)
 {
+    if (!bIsAbility3UseAllowed) return;
+
     _ability_3->Trigger(KeyState::End);
 }
 
@@ -237,3 +273,7 @@ void ANNPlayerCharacter::ResetDash()
 {
     GetCharacterMovement()->MaxWalkSpeed = 600.f;
 }
+
+void ANNPlayerCharacter::SetAbiltity1UseAllowed() { bIsAbility1UseAllowed = true; }
+void ANNPlayerCharacter::SetAbiltity2UseAllowed() { bIsAbility2UseAllowed = true; }
+void ANNPlayerCharacter::SetAbiltity3UseAllowed() { bIsAbility3UseAllowed = true; }
