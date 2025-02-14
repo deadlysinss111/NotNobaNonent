@@ -5,6 +5,8 @@
 
 void UNNFireAbitity::Trigger(KeyState state)
 {
+	//LOG
+	UE_LOG(LogTemp, Warning, TEXT("GOOOOOO"));
 
     if (!_owner) return;
 
@@ -26,8 +28,15 @@ void UNNFireAbitity::Fire()
 	//Get the object with tag spawnPoint in the owner component
     UActorComponent* component = _owner->FindComponentByTag(UActorComponent::StaticClass(), "spawnPoint");
 
+	//LOG
+	UE_LOG(LogTemp, Warning, TEXT("Fire"));
+
 	if (USceneComponent* SceneComp = Cast<USceneComponent>(component))
 	{
+		//LOG
+		
+
+		UE_LOG(LogTemp, Warning, TEXT("Spawn"));
 		//Spawn the arrow at the turret's location to the direction of the target
 		GetWorld()->SpawnActor<AActor>(_BPArrow, SceneComp->GetComponentLocation(), direction.ToOrientationRotator());
 	}

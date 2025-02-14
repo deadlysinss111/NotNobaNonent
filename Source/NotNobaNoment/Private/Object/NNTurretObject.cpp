@@ -57,9 +57,6 @@ void ANNTurretObject::Tick(float DeltaTime)
 void ANNTurretObject::OnHealthChanged(float CurrentHealth)
 {
 	_ability1Cooldown = 2;
-
-	//LOG
-	UE_LOG(LogTemp, Warning, TEXT("Turret health: %f !!!!!!!!!!!!!!!!!!!!!!!!"), CurrentHealth);
 }
 
 void ANNTurretObject::OnDeath()
