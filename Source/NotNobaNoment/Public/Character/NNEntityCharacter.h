@@ -57,5 +57,5 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Entity")
 	virtual void OnHealthChanged(float CurrentHealth) override;
 	UFUNCTION(BlueprintCallable, Category = "Entity")
-	virtual void OnDeath() override {};
+	virtual void OnDeath() override { Destroy(); };
 };
