@@ -11,29 +11,30 @@ void UNNJump::Init(APawn* owner) {
 }
 
 
-void UNNJump::Trigger(KeyState state) {
+void UNNJump::Trigger() {
 	// Animate spring
-	FTimerHandle UnusedHandle;
-	_owner->GetWorldTimerManager().SetTimer(UnusedHandle, this, &UNNJump::OnDelayOver, 2, false);
+	/*FTimerHandle UnusedHandle;
+	_owner->GetWorldTimerManager().SetTimer(UnusedHandle, this, &UNNJump::OnDelayOver, 2, false);*/
 
 	
 }
 
 void UNNJump::OnDelayOver() 
 {
-	ANNEnemyCharacter* armless = Cast<ANNEnemyCharacter>(_owner);
-	armless->GetCollisionComponent()->OnActorEnter.AddDynamic(this, &ThisClass::OnActorEnter);
 
+	ANNEnemyCharacter* armless = Cast<ANNEnemyCharacter>(_owner);
+	//armless->GetCollisionComponent()->OnActorEnter.AddDynamic(this, &ThisClass::OnActorEnter);
 	AActor* target = Cast<AActor>(armless->_blackBoard->GetValueAsClass(TEXT("TargetActor")));
-	_owner->SetActorLocation(target->GetActorLocation());
+	if(target != NULL)
+		_owner->SetActorLocation(target->GetActorLocation());
 }
 
 
-void UNNJump::OnActorEnter(AActor* OtherActor) 
+void UNNJump::OnActorEnter(AActor* OtherActor)
 {
 	if(OtherActor->ActorHasTag("Wall")) {
-		ANNEnemyCharacter* armless = Cast<ANNEnemyCharacter>(_owner);
-		armless->GetCollisionComponent()->OnActorEnter.RemoveDynamic(this, &ThisClass::OnActorEnter);
+		//ANNEnemyCharacter* armless = Cast<ANNEnemyCharacter>(_owner);
+		//armless->GetCollisionComponent()->OnActorEnter.RemoveDynamic(this, &ThisClass::OnActorEnter);
 		_ObjectsHitOnTheFly.Empty();
 	}
 	else if (ANNPlayerCharacter* character = Cast<ANNPlayerCharacter>(OtherActor)) {

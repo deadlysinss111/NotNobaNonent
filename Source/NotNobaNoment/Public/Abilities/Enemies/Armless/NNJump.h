@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Abilities/NNAbility.h"
+#include "Abilities/NNEnemyAbility.h"
 #include "BehaviorTree/BlackboardComponent.h"
 #include "NNJump.generated.h"
 
@@ -11,13 +11,13 @@
  * 
  */
 UCLASS()
-class NOTNOBANOMENT_API UNNJump : public UNNAbility
+class NOTNOBANOMENT_API UNNJump : public UNNEnemyAbility
 {
 	GENERATED_BODY()
 
 public:
 	void Init(APawn* owner) override;
-	void Trigger(KeyState state) override;
+	void Trigger() override;
 
 	void OnDelayOver();
 
