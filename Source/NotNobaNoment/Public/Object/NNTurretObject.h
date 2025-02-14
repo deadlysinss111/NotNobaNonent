@@ -68,7 +68,6 @@ public:
 
 
 	// End INNEntityInterface
-
 	UFUNCTION(BlueprintCallable)
 	void OnEnemyDetected();
 

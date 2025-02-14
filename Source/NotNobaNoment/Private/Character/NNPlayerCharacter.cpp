@@ -8,7 +8,7 @@
 #include "GameFramework/CharacterMovementComponent.h"
 
 /**
- * Constructor for ANNPlayerCharacter.
+ * Constructor for ANNPlayerCharacter.TimerHan
  * Initializes the CameraBoom and Camera components and sets their properties.
  */
 ANNPlayerCharacter::ANNPlayerCharacter()
