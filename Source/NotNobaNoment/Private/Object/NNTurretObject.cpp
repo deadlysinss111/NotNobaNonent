@@ -57,6 +57,9 @@ void ANNTurretObject::Tick(float DeltaTime)
 void ANNTurretObject::OnHealthChanged(float CurrentHealth)
 {
 	_ability1Cooldown = 2;
+
+	//LOG
+	UE_LOG(LogTemp, Warning, TEXT("Turret health: %f !!!!!!!!!!!!!!!!!!!!!!!!"), CurrentHealth);
 }
 
 void ANNTurretObject::OnDeath()
@@ -70,9 +73,6 @@ void ANNTurretObject::OnEnemyDetected()
 	{	
 		//Turn the turret to the target
 		//TODO replace GetActorLocation() by the location of the top
-
-
-
 
 		UNNFireAbitity* abilityTemp = Cast<UNNFireAbitity>(_ability_1);
 		abilityTemp->_target = _target;

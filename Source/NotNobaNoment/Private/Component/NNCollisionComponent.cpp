@@ -106,13 +106,8 @@ void UNNCollisionComponent::SetCollisionComponent(UPrimitiveComponent* NewCollis
 
 void UNNCollisionComponent::HandleBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-    //LOG
-	UE_LOG(LogTemp, Warning, TEXT("UNNCollisionComponent - HandleBeginOverlap called"));
-
     if (OtherActor && OtherActor != GetOwner())
     {
-		//LOG
-		UE_LOG(LogTemp, Warning, TEXT("UNNCollisionComponent - HandleBeginOverlap called with valid actor"));
         OnActorEnter.Broadcast(OtherActor);
     }
 }

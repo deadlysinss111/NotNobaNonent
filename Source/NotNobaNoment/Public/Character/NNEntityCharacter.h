@@ -55,18 +55,20 @@ public:
 
 	// INNEntityInterface
 
+	UFUNCTION(BlueprintCallable, Category = "Entity")
 	virtual UNNCollisionComponent* GetCollisionComponent() const override { return CollisionComponent; };
+	UFUNCTION(BlueprintCallable, Category = "Entity")
 	virtual UNNHealthComponent* GetHealthComponent() const override { return HealthComponent; };
 
-	UFUNCTION()
+	UFUNCTION(BlueprintCallable, Category = "Entity")
 	virtual void OnActorEnter(AActor* OtherActor) override {};
-	UFUNCTION()
+	UFUNCTION(BlueprintCallable, Category = "Entity")
 	virtual void OnActorExit(AActor* OtherActor) override {};
-	UFUNCTION()
+	UFUNCTION(BlueprintCallable, Category = "Entity")
 	virtual void OnActorHit(AActor* OtherActor, const FHitResult& Hit) override {};
 
-	UFUNCTION()
+	UFUNCTION(BlueprintCallable, Category = "Entity")
 	virtual void OnHealthChanged(float CurrentHealth) override;
-	UFUNCTION()
+	UFUNCTION(BlueprintCallable, Category = "Entity")
 	virtual void OnDeath() override {};
 };

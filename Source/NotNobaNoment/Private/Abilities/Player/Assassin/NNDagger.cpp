@@ -17,7 +17,6 @@ ANNDagger::ANNDagger()
 	InitEventComponent<ANNDagger>(this);
 
 	_currentStateAction.BindUFunction(this, FName("HandedOverlapAction"));
-
 }
 
 void ANNDagger::BeginPlay()
@@ -82,8 +81,13 @@ void ANNDagger::HittingOverlapAction(AActor* OtherActor) {
 
 	if (OtherActor->Implements<UNNEntityInterface>())
 	{
+		//LOG entity name
+		UE_LOG(LogTemp, Warning, TEXT("HITTING %s"), *OtherActor->GetName());
 		if (ANNPlayerCharacter* entity = Cast<ANNPlayerCharacter>(OtherActor))
 			return;
+		
+		//LOG
+		UE_LOG(LogTemp, Warning, TEXT("HITTING %s"), *OtherActor->GetName());
 
 		INNEntityInterface* entity = Cast<INNEntityInterface>(OtherActor);
 		if (entity && entity->GetHealthComponent() != nullptr)
@@ -146,6 +150,17 @@ void ANNDagger::FlyingOverlapAction(AActor* OtherActor) {
 }
 
 void ANNDagger::GroundedOverlapAction(AActor* OtherActor) {
+
+	//Change une condition de collision pour pouvoir ramasser le couteau
+
+	UPrimitiveComponent* PhysComp = Cast<UPrimitiveComponent>(GetRootComponent());
+	//LOG PhysComp->GetName()
+	if (PhysComp)
+	{
+		//LOG PhysComp->GetName()
+		UE_LOG(LogTemp, Warning, TEXT("PhysComp->GetName() %s"), *PhysComp->GetName());
+	}
+
 	if (ANNPlayerCharacter* character = Cast<ANNPlayerCharacter>(OtherActor)) {
 		GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, TEXT("GROUNDED"));
 		PickupAttack(character);
