@@ -45,6 +45,8 @@ void ANNPlayerCharacter::BeginPlay()
     //}
     //else
     //    GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, TEXT("the ability set is null"));
+
+    bIsDaggerInHand = true;
 }
 
 /**
@@ -190,7 +192,7 @@ void ANNPlayerCharacter::StartPlayerAbility1(const FInputActionValue& InputValue
 
     _ability_1->Trigger(KeyState::Start);
 
-    GetWorldTimerManager().SetTimer(Ability1Authoriser, this, &ANNPlayerCharacter::SetAbsiltity1UseAllowed, ability1Cooldown, false);
+    GetWorldTimerManager().SetTimer(Ability1Authoriser, this, &ANNPlayerCharacter::SetAbiltity1UseAllowed, ability1Cooldown, false);
     bIsAbility1UseAllowed = false;
     ability1RemainingCooldown = ability1Cooldown;
 }
@@ -219,7 +221,7 @@ void ANNPlayerCharacter::StartPlayerAbility2(const FInputActionValue& InputValue
 
     _ability_2->Trigger(KeyState::Start);
 
-    GetWorldTimerManager().SetTimer(Ability1Authoriser, this, &ANNPlayerCharacter::SetAbsiltity2UseAllowed, ability2Cooldown, false);
+    GetWorldTimerManager().SetTimer(Ability1Authoriser, this, &ANNPlayerCharacter::SetAbiltity2UseAllowed, ability2Cooldown, false);
     bIsAbility2UseAllowed = false;
     ability2RemainingCooldown = ability2Cooldown;
 }
@@ -248,7 +250,7 @@ void ANNPlayerCharacter::StartPlayerAbility3(const FInputActionValue& InputValue
 
     _ability_3->Trigger(KeyState::Start);
 
-    GetWorldTimerManager().SetTimer(Ability1Authoriser, this, &ANNPlayerCharacter::SetAbsiltity3UseAllowed, ability3Cooldown, false);
+    GetWorldTimerManager().SetTimer(Ability1Authoriser, this, &ANNPlayerCharacter::SetAbiltity3UseAllowed, ability3Cooldown, false);
     bIsAbility3UseAllowed = false;
     ability3RemainingCooldown = ability3Cooldown;
 }
@@ -273,6 +275,6 @@ void ANNPlayerCharacter::ResetDash()
     GetCharacterMovement()->MaxWalkSpeed = 600.f;
 }
 
-void ANNPlayerCharacter::SetAbsiltity1UseAllowed() { bIsAbility1UseAllowed = true; }
-void ANNPlayerCharacter::SetAbsiltity2UseAllowed() { bIsAbility2UseAllowed = true; }
-void ANNPlayerCharacter::SetAbsiltity3UseAllowed() { bIsAbility3UseAllowed = true; }
+void ANNPlayerCharacter::SetAbiltity1UseAllowed() { bIsAbility1UseAllowed = true; }
+void ANNPlayerCharacter::SetAbiltity2UseAllowed() { bIsAbility2UseAllowed = true; }
+void ANNPlayerCharacter::SetAbiltity3UseAllowed() { bIsAbility3UseAllowed = true; }

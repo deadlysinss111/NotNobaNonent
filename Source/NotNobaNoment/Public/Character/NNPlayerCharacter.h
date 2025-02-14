@@ -41,18 +41,16 @@ public:
 	//UPROPERTY(BlueprintReadWrite)
 	//UUserWidget* _DesignatedUserWidget;
 
-	// MOVED TO ENTITY
-	//UPROPERTY(EditAnywhere)
-	//UNNAbilitySetDataAsset* _abilitySet;
+	// Used in UserWidget (BP version)
+	UPROPERTY(BlueprintReadOnly) float ability1RemainingCooldown;
+	UPROPERTY(BlueprintReadOnly) float ability2RemainingCooldown;
+	UPROPERTY(BlueprintReadOnly) float ability3RemainingCooldown;
+	UPROPERTY(BlueprintReadOnly) bool bIsAbility1UseAllowed;
+	UPROPERTY(BlueprintReadOnly) bool bIsAbility2UseAllowed;
+	UPROPERTY(BlueprintReadOnly) bool bIsAbility3UseAllowed;
 
-	//UPROPERTY()
-	//UNNAbility* _ability_1;
-
-	//UPROPERTY()
-	//UNNAbility* _ability_2;
-
-	//UPROPERTY()
-	//UNNAbility* _ability_3;
+	// Special boolean to change an icon in UserWidget (BP version)
+	UPROPERTY(BlueprintReadOnly) bool bIsDaggerInHand;
 
 	//Input System
 protected:
@@ -76,24 +74,18 @@ protected:
 	class UInputAction* Ability1Action;
 	UPROPERTY(BlueprintReadWrite, Category = "Entity")
 	float ability1Cooldown;
-	float ability1RemainingCooldown;
-	bool bIsAbility1UseAllowed;
 	FTimerHandle Ability1Authoriser;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Entity")
 	class UInputAction* Ability2Action;
 	UPROPERTY(BlueprintReadWrite, Category = "Entity")
 	float ability2Cooldown;
-	float ability2RemainingCooldown;
-	bool bIsAbility2UseAllowed;
 	FTimerHandle Ability2Authoriser;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Entity")
 	class UInputAction* Ability3Action;
 	UPROPERTY(BlueprintReadWrite, Category = "Entity")
 	float ability3Cooldown;
-	float ability3RemainingCooldown;
-	bool bIsAbility3UseAllowed;
 	FTimerHandle Ability3Authoriser;
 
 	//Camera
@@ -122,9 +114,9 @@ protected:
 	void HoldPlayerAbility3(const FInputActionValue& InputValue);
 	void EndPlayerAbility3(const FInputActionValue& InputValue);
 
-	void SetAbsiltity1UseAllowed();
-	void SetAbsiltity2UseAllowed();
-	void SetAbsiltity3UseAllowed();
+	void SetAbiltity1UseAllowed();
+	void SetAbiltity2UseAllowed();
+	void SetAbiltity3UseAllowed();
 
 
 private:
